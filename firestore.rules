@@ -1,0 +1,132 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =========================================================================
+    // DỰ ÁN: TÂN × TRÂN — HÀNH TRÌNH TRƯỞNG THÀNH (TxT)
+    // FIRESTORE SECURITY RULES (QUY TẮC BẢO MẬT DỮ LIỆU)
+    // =========================================================================
+    // HƯỚNG DẪN DÁN VÀO FIREBASE CONSOLE:
+    // 1. Mở Firebase Console: https://console.firebase.google.com/
+    // 2. Chọn dự án TxT của bạn.
+    // 3. Vào mục Build -> Firestore Database -> Thẻ "Rules" (Quy tắc).
+    // 4. Thay thế TAN_UID_PLACEHOLDER và TRAN_UID_PLACEHOLDER bên dưới bằng
+    //    UID thật của Tân và Trân (lấy từ tab Authentication -> Users).
+    // 5. Bấm nút "Publish" (Xuất bản) để kích hoạt.
+    // =========================================================================
+
+    // HÀM KIỂM TRA: Thay thế 2 UID này bằng UID thực tế của Tân và Trân
+    function isAllowedUser() {
+      return request.auth != null && (
+        request.auth.uid == "TAN_UID_PLACEHOLDER" || 
+        request.auth.uid == "TRAN_UID_PLACEHOLDER"
+      );
+    }
+
+    function isTan() {
+      return request.auth != null && request.auth.uid == "TAN_UID_PLACEHOLDER";
+    }
+
+    function isTran() {
+      return request.auth != null && request.auth.uid == "TRAN_UID_PLACEHOLDER";
+    }
+
+    // Kiểm tra chủ sở hữu dữ liệu cá nhân
+    function isOwner(resourceData) {
+      return request.auth != null && resourceData.ownerUid == request.auth.uid;
+    }
+
+    // Kiểm tra tính hợp lệ của người tạo khi thêm mới
+    function isValidCreate() {
+      return isAllowedUser() && 
+             request.resource.data.createdBy == request.auth.uid &&
+             (
+               // Dữ liệu chung: cả hai đều có thể tạo
+               request.resource.data.scope == "shared" ||
+               // Dữ liệu cá nhân: ownerUid phải chính là người tạo
+               (request.resource.data.scope == "personal" && request.resource.data.ownerUid == request.auth.uid)
+             );
+    }
+
+    // Kiểm tra quyền cập nhật/xóa:
+    // - Dữ liệu chung (shared): Tân hoặc Trân đều có thể sửa/xóa
+    // - Dữ liệu cá nhân (personal): Chỉ người sở hữu (ownerUid) mới có quyền sửa/xóa
+    function canModify(resourceData) {
+      return isAllowedUser() && (
+        resourceData.scope == "shared" || 
+        resourceData.ownerUid == request.auth.uid
+      );
+    }
+
+    // -------------------------------------------------------------------------
+    // 1. BẢNG HỒ SƠ CÁ NHÂN (profiles)
+    // - profiles/{uid}: Tân chỉ sửa hồ sơ Tân, Trân chỉ sửa hồ sơ Trân. Cả 2 đều xem được.
+    // -------------------------------------------------------------------------
+    match /profiles/{userId} {
+      // Chỉ Tân và Trân mới được đọc hồ sơ của nhau
+      allow read: if isAllowedUser();
+      // Mỗi người chỉ được tạo hoặc cập nhật đúng tài liệu có id là UID của mình
+      allow create, update: if isAllowedUser() && request.auth.uid == userId;
+      // Không cho phép xóa hồ sơ cá nhân
+      allow delete: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // 2. DÒNG THỜI GIAN (timeline)
+    // -------------------------------------------------------------------------
+    match /timeline/{docId} {
+      allow read: if isAllowedUser();
+      allow create: if isValidCreate();
+      allow update, delete: if canModify(resource.data);
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. KỶ NIỆM & NHẬT KÝ (memories)
+    // -------------------------------------------------------------------------
+    match /memories/{docId} {
+      allow read: if isAllowedUser();
+      allow create: if isValidCreate();
+      allow update, delete: if canModify(resource.data);
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. MỤC TIÊU & KẾ HOẠCH PHÁT TRIỂN (goals)
+    // -------------------------------------------------------------------------
+    match /goals/{docId} {
+      allow read: if isAllowedUser();
+      allow create: if isValidCreate();
+      allow update, delete: if canModify(resource.data);
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. DANH SÁCH TRẢI NGHIỆM (bucket_list)
+    // -------------------------------------------------------------------------
+    match /bucket_list/{docId} {
+      allow read: if isAllowedUser();
+      allow create: if isValidCreate();
+      allow update, delete: if canModify(resource.data);
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. THƯ VIỆN PHƯƠNG TIỆN (media_library)
+    // -------------------------------------------------------------------------
+    match /media_library/{docId} {
+      allow read: if isAllowedUser();
+      allow create: if isValidCreate();
+      allow update, delete: if canModify(resource.data);
+    }
+
+    // -------------------------------------------------------------------------
+    // 7. CẤU HÌNH HỆ THỐNG / APP STATE (system_meta)
+    // -------------------------------------------------------------------------
+    match /system_meta/{docId} {
+      allow read: if isAllowedUser();
+      allow write: if isAllowedUser();
+    }
+
+    // Chặn toàn bộ các truy cập khác ngoài phạm vi
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

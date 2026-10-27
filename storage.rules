@@ -1,0 +1,56 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // =========================================================================
+    // DỰ ÁN: TÂN × TRÂN — HÀNH TRÌNH TRƯỞNG THÀNH (TxT)
+    // FIREBASE STORAGE SECURITY RULES (QUY TẮC BẢO MẬT TẢI LÊN FILE)
+    // =========================================================================
+    // HƯỚNG DẪN DÁN VÀO FIREBASE CONSOLE:
+    // 1. Mở Firebase Console: https://console.firebase.google.com/
+    // 2. Chọn dự án TxT của bạn.
+    // 3. Vào mục Build -> Storage -> Thẻ "Rules" (Quy tắc).
+    // 4. Thay thế TAN_UID_PLACEHOLDER và TRAN_UID_PLACEHOLDER bên dưới bằng
+    //    UID thật của Tân và Trân (lấy từ tab Authentication -> Users).
+    // 5. Bấm nút "Publish" (Xuất bản) để kích hoạt.
+    // =========================================================================
+
+    function isAllowedUser() {
+      return request.auth != null && (
+        request.auth.uid == "TAN_UID_PLACEHOLDER" || 
+        request.auth.uid == "TRAN_UID_PLACEHOLDER"
+      );
+    }
+
+    // Kiểm tra định dạng và dung lượng hợp lệ
+    // Ảnh <= 25MB, Âm thanh <= 50MB, Video <= 100MB
+    function isValidMedia() {
+      return (
+        (request.resource.contentType.matches('image/.*') && request.resource.size <= 25 * 1024 * 1024) ||
+        (request.resource.contentType.matches('audio/.*') && request.resource.size <= 50 * 1024 * 1024) ||
+        (request.resource.contentType.matches('video/.*') && request.resource.size <= 100 * 1024 * 1024)
+      );
+    }
+
+    // 1. Thư mục cá nhân của từng người: uploads/{userId}/{allPaths=**}
+    // Cả hai đều có thể xem ảnh/video của nhau (read), nhưng chỉ chủ sở hữu mới được upload hoặc xóa.
+    match /uploads/{userId}/{allPaths=**} {
+      allow read: if isAllowedUser();
+      allow write: if isAllowedUser() && request.auth.uid == userId && isValidMedia();
+      allow delete: if isAllowedUser() && request.auth.uid == userId;
+    }
+
+    // 2. Thư mục kỷ niệm & dữ liệu chung: uploads/shared/{allPaths=**}
+    // Cả Tân và Trân đều có quyền xem, tải lên và xóa file kỷ niệm chung.
+    match /uploads/shared/{allPaths=**} {
+      allow read: if isAllowedUser();
+      allow write: if isAllowedUser() && isValidMedia();
+      allow delete: if isAllowedUser();
+    }
+
+    // Chặn tất cả các đường dẫn khác
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

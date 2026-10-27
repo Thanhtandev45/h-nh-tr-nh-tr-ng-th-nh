@@ -1,0 +1,4302 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>TÂN × TRÂN — HÀNH TRÌNH TRƯỞNG THÀNH | TxT</title>
+  <meta name="description" content="TxT — Không gian riêng tư lưu giữ hành trình trưởng thành, kỷ niệm, mục tiêu và những cột mốc đáng nhớ của Tân và Trân.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Cinzel:wght@600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       01. HỆ THỐNG BIẾN CSS & GIAO DIỆN COSMIC LUXURY (DARK / LIGHT THEME)
+       ========================================================================== */
+    :root {
+      /* Bảng màu Dark Mode mặc định (Vũ trụ huyền bí & Obsidian) */
+      --bg-space: #070512;
+      --bg-surface: #100b24;
+      --bg-card: rgba(23, 16, 48, 0.75);
+      --bg-card-hover: rgba(33, 23, 68, 0.88);
+      --bg-card-subtle: rgba(255, 255, 255, 0.03);
+      --border-cosmic: rgba(186, 142, 255, 0.18);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(199, 125, 255, 0.45);
+
+      /* Màu nhấn nhận diện thương hiệu TxT */
+      --cosmic-purple: #9d4edd;
+      --cosmic-purple-deep: #5a189a;
+      --blush-pink: #ff70a6;
+      --lavender-glow: #e0aaff;
+      --champagne-gold: #f3c053;
+      --champagne-gold-light: #ffeaad;
+      --stellar-white: #f8f9fc;
+      --stardust-cyan: #4cc9f0;
+      --text-main: #f3f0fa;
+      --text-muted: #a69bb8;
+      --text-sub: #7b6f93;
+
+      /* Trạng thái nghiệp vụ */
+      --status-success: #2ec4b6;
+      --status-warning: #ff9f1c;
+      --status-danger: #e71d36;
+      --status-info: #3a86ff;
+
+      /* Hiệu ứng bóng & ánh sáng (Glow) */
+      --shadow-cosmic: 0 10px 30px -10px rgba(114, 9, 183, 0.4);
+      --shadow-glow: 0 0 25px rgba(199, 125, 255, 0.25);
+      --shadow-gold: 0 0 20px rgba(243, 192, 83, 0.25);
+      --glass-blur: blur(16px);
+      --glass-blur-sm: blur(8px);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --transition-smooth: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Giao diện Sáng (Cosmic Dawn - Ánh bình minh vũ trụ nhẹ nhàng) */
+    [data-theme="light"] {
+      --bg-space: #f7f4fc;
+      --bg-surface: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --bg-card-hover: rgba(255, 255, 255, 0.98);
+      --bg-card-subtle: rgba(123, 44, 191, 0.04);
+      --border-cosmic: rgba(123, 44, 191, 0.22);
+      --border-subtle: rgba(0, 0, 0, 0.07);
+      --border-glow: rgba(157, 78, 221, 0.4);
+      --text-main: #181126;
+      --text-muted: #5e5175;
+      --text-sub: #86799e;
+      --shadow-cosmic: 0 12px 30px -10px rgba(123, 44, 191, 0.15);
+      --shadow-glow: 0 0 20px rgba(123, 44, 191, 0.12);
+    }
+
+    /* ==========================================================================
+       02. RESET & CẤU TRÚC NỀN TẢNG (RESPONSIVE & ACCESSIBILITY)
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-space);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* Canvas sao & hạt vũ trụ chuyển động */
+    #starfield-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.65;
+    }
+
+    /* Ánh sáng nền Cosmic Auroras */
+    .cosmic-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+      animation: floatOrb 18s infinite alternate ease-in-out;
+    }
+    .orb-1 {
+      top: -10%;
+      left: 10%;
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, var(--cosmic-purple-deep), transparent 70%);
+    }
+    .orb-2 {
+      bottom: 5%;
+      right: -5%;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, #5b1647, transparent 70%);
+      animation-delay: -7s;
+    }
+    .orb-3 {
+      top: 40%;
+      left: 45%;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(243, 192, 83, 0.15), transparent 70%);
+      animation-delay: -12s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 35px) scale(1.12); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cosmic-orb { animation: none !important; }
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+
+    /* ==========================================================================
+       03. BỐ CỤC CHÍNH (CONTAINER & LAYOUT)
+       ========================================================================== */
+    .app-root {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    @media (min-width: 768px) {
+      .app-root { padding: 0 28px; }
+    }
+
+    /* ==========================================================================
+       04. THANH ĐIỀU HƯỚNG TRÊN CÙNG (TOP NAVIGATION)
+       ========================================================================== */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      background: rgba(7, 5, 18, 0.82);
+      backdrop-filter: var(--glass-blur);
+      z-index: 100;
+      transition: var(--transition-smooth);
+    }
+    [data-theme="light"] .topbar {
+      background: rgba(247, 244, 252, 0.88);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-logo-gem {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--cosmic-purple), var(--blush-pink), var(--champagne-gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cinzel', serif;
+      font-weight: 900;
+      font-size: 1.15rem;
+      color: #fff;
+      box-shadow: var(--shadow-glow);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .brand-logo-gem::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: rotate(45deg);
+      animation: gemSheen 6s infinite;
+    }
+    @keyframes gemSheen {
+      0%, 80% { transform: translateY(-100%) rotate(45deg); }
+      100% { transform: translateY(100%) rotate(45deg); }
+    }
+
+    .brand-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(90deg, #fff, var(--lavender-glow), var(--champagne-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-theme="light"] .brand-text h1 {
+      background: linear-gradient(90deg, #181126, var(--cosmic-purple), #b3531b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-text p {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    /* Nhóm tiện ích trên thanh điều hướng: Audio, Theme, User */
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cosmic);
+      color: var(--text-main);
+      padding: 8px 13px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      backdrop-filter: var(--glass-blur-sm);
+      transition: var(--transition-smooth);
+    }
+    .action-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-glow);
+      transform: translateY(-1px);
+    }
+
+    /* Trình phát nhạc thanh lịch TxT Ambient Sound */
+    .music-widget {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-cosmic);
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+    }
+    .music-waves {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 14px;
+    }
+    .music-wave-bar {
+      width: 2.5px;
+      background: var(--blush-pink);
+      border-radius: 2px;
+      height: 4px;
+      transition: height 0.2s ease;
+    }
+    .music-playing .music-wave-bar:nth-child(1) { animation: wavePulse 0.9s infinite ease-in-out alternate; }
+    .music-playing .music-wave-bar:nth-child(2) { animation: wavePulse 1.2s infinite ease-in-out alternate 0.2s; }
+    .music-playing .music-wave-bar:nth-child(3) { animation: wavePulse 0.7s infinite ease-in-out alternate 0.4s; }
+    @keyframes wavePulse {
+      0% { height: 3px; }
+      100% { height: 14px; }
+    }
+
+    /* Thẻ định danh người dùng đang đăng nhập */
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 6px;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-cosmic);
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+    }
+    .user-pill-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--cosmic-purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* ==========================================================================
+       05. MENU ĐIỀU HƯỚNG CHÍNH (MAIN NAVIGATION TABS)
+       ========================================================================== */
+    .nav-tabs-wrapper {
+      margin: 18px 0 24px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .nav-tabs-wrapper::-webkit-scrollbar { display: none; }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      width: max-content;
+      margin: 0 auto;
+      backdrop-filter: var(--glass-blur);
+    }
+
+    .nav-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+    .nav-tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .nav-tab-btn.active {
+      color: #fff;
+      background: linear-gradient(135deg, var(--cosmic-purple), var(--blush-pink));
+      box-shadow: 0 4px 18px rgba(157, 78, 221, 0.35);
+    }
+
+    /* ==========================================================================
+       06. CÁC KHU VỰC NỘI DUNG (SECTIONS VIEW CONTROLLER)
+       ========================================================================== */
+    .view-section {
+      display: none;
+      animation: fadeInView 0.35s ease forwards;
+      padding-bottom: 90px;
+    }
+    .view-section.active-view {
+      display: block;
+    }
+    @keyframes fadeInView {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       07. CARD & GRID LAYOUT
+       ========================================================================== */
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cosmic);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      backdrop-filter: var(--glass-blur);
+      box-shadow: var(--shadow-cosmic);
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+    .glass-card:hover {
+      border-color: var(--border-glow);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 860px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 680px) {
+      .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1040px) {
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    @media (min-width: 860px) {
+      .grid-4 { grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    }
+
+    /* ==========================================================================
+       08. PHẦN TỔNG QUAN (DASHBOARD)
+       ========================================================================== */
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(90, 24, 154, 0.45), rgba(255, 112, 166, 0.22), rgba(7, 5, 18, 0.7));
+      border: 1px solid var(--border-glow);
+      border-radius: var(--radius-lg);
+      padding: 30px 24px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .hero-banner::before {
+      content: 'TxT';
+      position: absolute;
+      right: 20px;
+      bottom: -15px;
+      font-family: 'Cinzel', serif;
+      font-size: 8rem;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.03);
+      pointer-events: none;
+      line-height: 1;
+    }
+    .hero-greeting {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .hero-tagline {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 600px;
+      margin-bottom: 20px;
+    }
+
+    /* Khối đếm hành trình tình yêu & thời gian gặp gỡ */
+    .counters-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 15px;
+    }
+    @media (min-width: 640px) {
+      .counters-row { grid-template-columns: 1fr 1fr; }
+    }
+
+    .counter-card {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    [data-theme="light"] .counter-card {
+      background: rgba(255, 255, 255, 0.6);
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    .counter-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cosmic-purple), var(--blush-pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .counter-val {
+      font-family: 'Cinzel', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--champagne-gold-light);
+      line-height: 1.2;
+    }
+    [data-theme="light"] .counter-val { color: var(--cosmic-purple-deep); }
+    .counter-lbl {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Thẻ thống kê số lượng */
+    .stat-box {
+      text-align: center;
+      padding: 16px 12px;
+    }
+    .stat-number {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff, var(--lavender-glow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 2px;
+    }
+    [data-theme="light"] .stat-number {
+      background: linear-gradient(135deg, var(--cosmic-purple-deep), #8b185b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-label {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    /* Phím tắt hành động nhanh (Quick actions) */
+    .quick-actions-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    /* ==========================================================================
+       09. PHẦN HỒ SƠ CÁ NHÂN (PROFILES: TÂN & TRÂN)
+       ========================================================================== */
+    .profile-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .profile-switch-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cosmic);
+      color: var(--text-muted);
+      padding: 10px 24px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+    .profile-switch-btn.active {
+      background: linear-gradient(135deg, var(--cosmic-purple), var(--blush-pink));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .profile-header-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 30px 20px;
+      margin-bottom: 24px;
+    }
+    @media (min-width: 680px) {
+      .profile-header-card {
+        flex-direction: row;
+        text-align: left;
+        gap: 28px;
+        padding: 36px 30px;
+      }
+    }
+    .profile-avatar-wrapper {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      padding: 4px;
+      background: linear-gradient(135deg, var(--cosmic-purple), var(--blush-pink), var(--champagne-gold));
+      box-shadow: var(--shadow-glow);
+      flex-shrink: 0;
+      margin-bottom: 16px;
+    }
+    @media (min-width: 680px) { .profile-avatar-wrapper { margin-bottom: 0; } }
+
+    .profile-avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bg-surface);
+    }
+    .profile-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .profile-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      background: rgba(157, 78, 221, 0.2);
+      border: 1px solid var(--border-cosmic);
+      color: var(--lavender-glow);
+      margin-bottom: 10px;
+    }
+    [data-theme="light"] .profile-badge {
+      color: var(--cosmic-purple-deep);
+      background: rgba(123, 44, 191, 0.08);
+    }
+    .profile-bio {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      max-width: 700px;
+      line-height: 1.6;
+    }
+
+    /* Các khối chi tiết trong hồ sơ */
+    .profile-detail-section {
+      margin-bottom: 18px;
+    }
+    .profile-detail-title {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--champagne-gold);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .profile-tags-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .profile-tag-item {
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      padding: 5px 12px;
+      font-size: 0.84rem;
+    }
+
+    /* ==========================================================================
+       10. PHẦN DÒNG THỜI GIAN (TIMELINE)
+       ========================================================================== */
+    .timeline-container {
+      position: relative;
+      padding: 20px 0;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .timeline-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 20px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--cosmic-purple), var(--blush-pink), var(--champagne-gold), transparent);
+    }
+    @media (min-width: 768px) {
+      .timeline-container::before { left: 50%; transform: translateX(-50%); }
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 36px;
+    }
+    .timeline-dot {
+      position: absolute;
+      top: 18px;
+      left: 13px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--cosmic-purple);
+      border: 3px solid var(--bg-space);
+      box-shadow: 0 0 12px var(--blush-pink);
+      z-index: 2;
+    }
+    @media (min-width: 768px) {
+      .timeline-dot { left: 50%; transform: translateX(-50%); }
+    }
+
+    .timeline-content-card {
+      margin-left: 48px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-cosmic);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      backdrop-filter: var(--glass-blur);
+    }
+    @media (min-width: 768px) {
+      .timeline-item:nth-child(odd) .timeline-content-card {
+        margin-left: 0;
+        margin-right: calc(50% + 28px);
+        text-align: right;
+      }
+      .timeline-item:nth-child(even) .timeline-content-card {
+        margin-left: calc(50% + 28px);
+        text-align: left;
+      }
+    }
+
+    .timeline-date {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--champagne-gold);
+      margin-bottom: 6px;
+    }
+    .timeline-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .timeline-story {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .timeline-media {
+      max-width: 100%;
+      border-radius: var(--radius-sm);
+      margin: 10px 0;
+      border: 1px solid var(--border-subtle);
+      max-height: 280px;
+      object-fit: cover;
+    }
+
+    /* ==========================================================================
+       11. PHẦN KỶ NIỆM & NHẬT KÝ (MEMORIES & JOURNAL)
+       ========================================================================== */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      padding: 14px 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+    }
+    .search-input {
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.88rem;
+      min-width: 220px;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+    .search-input:focus {
+      border-color: var(--border-glow);
+      box-shadow: 0 0 10px rgba(186, 142, 255, 0.2);
+    }
+
+    .filter-select {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .memory-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      cursor: pointer;
+    }
+    .memory-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .memory-badge {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 112, 166, 0.15);
+      color: var(--blush-pink);
+      border: 1px solid rgba(255, 112, 166, 0.3);
+    }
+    .memory-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .memory-snippet {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 14px;
+      line-height: 1.55;
+    }
+    .memory-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--text-sub);
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 10px;
+      margin-top: auto;
+    }
+
+    /* ==========================================================================
+       12. PHẦN MỤC TIÊU & PHÁT TRIỂN (GOALS)
+       ========================================================================== */
+    .goal-card {
+      position: relative;
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin: 12px 0 8px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cosmic-purple), var(--blush-pink), var(--champagne-gold));
+      border-radius: var(--radius-full);
+      transition: width 0.4s ease;
+    }
+    .subtasks-list {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .subtask-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .subtask-item input[type="checkbox"] {
+      accent-color: var(--cosmic-purple);
+      cursor: pointer;
+    }
+    .subtask-item.completed span {
+      text-decoration: line-through;
+      color: var(--text-sub);
+    }
+
+    /* ==========================================================================
+       13. DANH SÁCH TRẢI NGHIỆM (BUCKET LIST)
+       ========================================================================== */
+    .bucket-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px;
+    }
+    .bucket-check-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 2px solid var(--border-cosmic);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: transparent;
+      transition: var(--transition-smooth);
+      margin-top: 2px;
+    }
+    .bucket-check-btn.checked {
+      background: var(--status-success);
+      border-color: var(--status-success);
+      color: #fff;
+    }
+    .bucket-info {
+      flex: 1;
+    }
+    .bucket-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .bucket-item.completed .bucket-title {
+      text-decoration: line-through;
+      color: var(--text-sub);
+    }
+
+    /* ==========================================================================
+       14. THƯ VIỆN PHƯƠNG TIỆN (MEDIA GALLERY)
+       ========================================================================== */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width: 680px) {
+      .media-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    }
+    @media (min-width: 1040px) {
+      .media-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .media-card-item {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      group: hover;
+    }
+    .media-card-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .media-card-item:hover .media-card-thumb {
+      transform: scale(1.05);
+    }
+    .media-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(7, 5, 18, 0.9), transparent 60%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 10px;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .media-card-item:hover .media-card-overlay {
+      opacity: 1;
+    }
+    .media-card-caption {
+      font-size: 0.78rem;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    /* ==========================================================================
+       15. THÙNG RÁC & LỊCH SỬ (TRASH BIN)
+       ========================================================================== */
+    .trash-table-wrapper {
+      overflow-x: auto;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    .data-table th, .data-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .data-table th {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+    }
+
+    /* ==========================================================================
+       16. BIỂU MẪU & NÚT BẤM (FORMS & BUTTONS)
+       ========================================================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: var(--radius-full);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: var(--transition-smooth);
+      text-decoration: none;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cosmic-purple), var(--blush-pink));
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(157, 78, 221, 0.35);
+    }
+    .btn-primary:hover:not(:disabled) {
+      box-shadow: 0 6px 22px rgba(255, 112, 166, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, var(--champagne-gold), #e09f3e);
+      color: #1a1005;
+      font-weight: 700;
+      box-shadow: var(--shadow-gold);
+    }
+    .btn-secondary {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cosmic);
+      color: var(--text-main);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--bg-card-hover);
+      border-color: var(--border-glow);
+    }
+    .btn-danger {
+      background: rgba(231, 29, 54, 0.18);
+      border: 1px solid rgba(231, 29, 54, 0.4);
+      color: #ff6b7e;
+    }
+    .btn-danger:hover:not(:disabled) {
+      background: var(--status-danger);
+      color: #fff;
+    }
+    .btn-sm {
+      padding: 5px 12px;
+      font-size: 0.8rem;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+    .form-control:focus {
+      border-color: var(--border-glow);
+      box-shadow: 0 0 12px rgba(186, 142, 255, 0.25);
+    }
+    textarea.form-control {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    /* ==========================================================================
+       17. MODAL (HỘP THOẠI DIALOG) & TOAST NOTIFICATION
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 3, 10, 0.82);
+      backdrop-filter: var(--glass-blur);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-cosmic);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 620px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+      animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.95) translateY(10px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.3rem;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+    .modal-body {
+      padding: 22px;
+    }
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 16px 22px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-card-subtle);
+    }
+
+    /* Hệ thống Toast thông báo trạng thái */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast-msg {
+      pointer-events: auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-cosmic);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      color: var(--text-main);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      animation: slideInToast 0.3s ease;
+      min-width: 280px;
+      max-width: 420px;
+    }
+    @keyframes slideInToast {
+      from { transform: translateX(50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .toast-msg.success { border-left: 4px solid var(--status-success); }
+    .toast-msg.error { border-left: 4px solid var(--status-danger); }
+    .toast-msg.warning { border-left: 4px solid var(--status-warning); }
+    .toast-msg.info { border-left: 4px solid var(--status-info); }
+
+    /* ==========================================================================
+       18. THANH ĐIỀU HƯỚNG DƯỚI ĐÁY CHO ĐIỆN THOẠI (MOBILE BOTTOM BAR)
+       ========================================================================== */
+    .mobile-dock {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10, 7, 24, 0.92);
+      backdrop-filter: var(--glass-blur);
+      border-top: 1px solid var(--border-subtle);
+      padding: 6px 10px 14px;
+      z-index: 100;
+      justify-content: space-around;
+      align-items: center;
+    }
+    [data-theme="light"] .mobile-dock {
+      background: rgba(255, 255, 255, 0.92);
+    }
+    @media (max-width: 768px) {
+      .mobile-dock { display: flex; }
+      .nav-tabs-wrapper { display: none; }
+    }
+    .mobile-dock-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 8px;
+      transition: var(--transition-smooth);
+    }
+    .mobile-dock-btn.active {
+      color: var(--blush-pink);
+    }
+    .mobile-dock-icon {
+      font-size: 1.15rem;
+    }
+
+    /* ==========================================================================
+       19. EMPTY STATE & BANNER CHƯA CẤU HÌNH FIREBASE
+       ========================================================================== */
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .empty-state-icon {
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+      opacity: 0.65;
+      animation: floatOrb 5s infinite alternate ease-in-out;
+    }
+    .empty-state-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .empty-state-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 440px;
+      margin: 0 auto 18px;
+    }
+
+    /* Banner hướng dẫn cài đặt Firebase khi chưa điền API Key */
+    .setup-banner {
+      background: linear-gradient(135deg, rgba(231, 29, 54, 0.15), rgba(157, 78, 221, 0.18));
+      border: 1px solid rgba(231, 29, 54, 0.4);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin: 15px 0 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    @media (min-width: 768px) {
+      .setup-banner { flex-direction: row; align-items: center; justify-content: space-between; }
+    }
+
+    /* Hiệu ứng mờ khóa quyền khi xem nội dung riêng của đối phương */
+    .read-only-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      background: rgba(243, 192, 83, 0.15);
+      color: var(--champagne-gold);
+      border: 1px solid rgba(243, 192, 83, 0.3);
+    }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <!-- ==========================================================================
+       CANVAS VŨ TRỤ & ÁNH SÁNG AURORA COSMIC
+       ========================================================================== -->
+  <canvas id="starfield-canvas"></canvas>
+  <div class="cosmic-orb orb-1"></div>
+  <div class="cosmic-orb orb-2"></div>
+  <div class="cosmic-orb orb-3"></div>
+
+  <!-- ==========================================================================
+       GIAO DIỆN CHÍNH (APPLICATION ROOT)
+       ========================================================================== -->
+  <div class="app-root">
+
+    <!-- THANH ĐIỀU HƯỚNG TRÊN CÙNG (TOPBAR) -->
+    <header class="topbar">
+      <a class="brand-group" onclick="switchView('dashboard')">
+        <div class="brand-logo-gem">TxT</div>
+        <div class="brand-text">
+          <h1>TÂN × TRÂN</h1>
+          <p>Hai Cuộc Đời, Một Câu Chuyện</p>
+        </div>
+      </a>
+
+      <div class="topbar-actions">
+        <!-- Trình phát nhạc TxT Cosmic Ambient -->
+        <div class="music-widget" title="Nhạc không gian thư giãn">
+          <button class="action-btn" id="btn-toggle-music" style="padding: 4px 8px; font-size: 0.8rem;">
+            <span id="music-icon">🎵</span>
+          </button>
+          <div class="music-waves" id="music-waves">
+            <div class="music-wave-bar"></div>
+            <div class="music-wave-bar"></div>
+            <div class="music-wave-bar"></div>
+          </div>
+          <input type="range" id="music-vol" min="0" max="1" step="0.05" value="0.4" style="width: 55px; accent-color: var(--blush-pink);" title="Âm lượng">
+        </div>
+
+        <!-- Nút chuyển đổi Giao diện Sáng / Tối -->
+        <button class="action-btn" id="btn-toggle-theme" title="Chuyển đổi Sáng/Tối">
+          <span id="theme-icon">🌙</span>
+        </button>
+
+        <!-- Trạng thái tài khoản người dùng -->
+        <div id="user-status-container">
+          <button class="action-btn btn-primary" id="btn-open-login" onclick="openLoginModal()">
+            <span>Đăng nhập</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- THANH MENU TAB TRÊN MÁY TÍNH (DESKTOP TABS) -->
+    <nav class="nav-tabs-wrapper">
+      <div class="nav-tabs">
+        <button class="nav-tab-btn active" onclick="switchView('dashboard')">🏠 Tổng quan</button>
+        <button class="nav-tab-btn" onclick="switchView('profiles')">👤 Hồ sơ</button>
+        <button class="nav-tab-btn" onclick="switchView('timeline')">⏳ Dòng thời gian</button>
+        <button class="nav-tab-btn" onclick="switchView('memories')">📖 Kỷ niệm & Nhật ký</button>
+        <button class="nav-tab-btn" onclick="switchView('goals')">🎯 Mục tiêu</button>
+        <button class="nav-tab-btn" onclick="switchView('bucket')">🌟 Điều muốn làm</button>
+        <button class="nav-tab-btn" onclick="switchView('media')">🖼️ Media</button>
+        <button class="nav-tab-btn" onclick="switchView('trash')">🗑️ Thùng rác</button>
+        <button class="nav-tab-btn" onclick="switchView('settings')">⚙️ Sao lưu & Cài đặt</button>
+      </div>
+    </nav>
+
+    <!-- BANNER CẢNH BÁO NẾU CHƯA CẤU HÌNH FIREBASE -->
+    <div id="setup-guide-banner" class="setup-banner" style="display: none;">
+      <div>
+        <h4 style="color: #ff6b7e; margin-bottom: 4px;">⚠️ Chưa cấu hình Firebase Project thật</h4>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">
+          Bạn đang xem ở <strong>Chế độ trải nghiệm thử (Demo Mode)</strong>. Hãy mở file <code>index.html</code> và dán thông tin Firebase của bạn vào khu vực <code>firebaseConfig</code> để lưu trữ dữ liệu vĩnh viễn trên đám mây.
+        </p>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="openConfigHelpModal()">Hướng dẫn thiết lập</button>
+    </div>
+
+    <!-- ========================================================================
+         VIEW 1: TRANG TỔNG QUAN (DASHBOARD)
+         ======================================================================== -->
+    <section id="view-dashboard" class="view-section active-view">
+      <!-- Hero Banner với Lời chào & Bộ đếm ngày yêu -->
+      <div class="hero-banner">
+        <h2 class="hero-greeting" id="hero-greeting-text">Chào mừng đến với Không gian TxT</h2>
+        <p class="hero-tagline">Nơi lưu giữ từng bước chân, tiếng cười, mục tiêu và những cột mốc trưởng thành của hai chúng mình.</p>
+
+        <!-- Bộ đếm 2 cột mốc khởi tạo -->
+        <div class="counters-row">
+          <div class="counter-card">
+            <div class="counter-icon">🎮</div>
+            <div>
+              <div class="counter-val" id="days-met-count">--</div>
+              <div class="counter-lbl">Ngày từ lần đầu gặp nhau trong Free Fire (22/10/2025)</div>
+            </div>
+          </div>
+
+          <div class="counter-card">
+            <div class="counter-icon">💫</div>
+            <div>
+              <div class="counter-val" id="days-love-count">--</div>
+              <div class="counter-lbl">Ngày chính thức xác nhận mối quan hệ (15/09/2026)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Khối thống kê số liệu thật từ Firestore -->
+      <div class="grid-4" style="margin-bottom: 24px;">
+        <div class="glass-card stat-box">
+          <div class="stat-number" id="stat-memories-count">0</div>
+          <div class="stat-label">Kỷ niệm đã lưu</div>
+        </div>
+        <div class="glass-card stat-box">
+          <div class="stat-number" id="stat-milestones-count">0</div>
+          <div class="stat-label">Cột mốc hành trình</div>
+        </div>
+        <div class="glass-card stat-box">
+          <div class="stat-number" id="stat-goals-active">0</div>
+          <div class="stat-label">Mục tiêu đang theo đuổi</div>
+        </div>
+        <div class="glass-card stat-box">
+          <div class="stat-number" id="stat-bucket-completed">0</div>
+          <div class="stat-label">Ước mơ đã hoàn thành</div>
+        </div>
+      </div>
+
+      <!-- Phím tắt thêm nhanh dữ liệu -->
+      <div class="quick-actions-bar">
+        <button class="btn btn-primary" onclick="openCreateMemoryModal()">✍️ Viết kỷ niệm mới</button>
+        <button class="btn btn-secondary" onclick="openCreateGoalModal()">🎯 Thêm mục tiêu</button>
+        <button class="btn btn-secondary" onclick="openCreateBucketModal()">✨ Thêm điều muốn trải nghiệm</button>
+        <button class="btn btn-secondary" onclick="openCreateTimelineModal()">⏳ Thêm cột mốc</button>
+      </div>
+
+      <!-- Xem nhanh Hồ sơ & Kỷ niệm gần đây -->
+      <div class="grid-2">
+        <!-- Thẻ tóm tắt 2 hồ sơ -->
+        <div class="glass-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h3 style="font-family:'Playfair Display',serif; font-size:1.2rem;">Hai Mảnh Ghép</h3>
+            <button class="btn btn-secondary btn-sm" onclick="switchView('profiles')">Xem chi tiết</button>
+          </div>
+          <div class="grid-2" style="gap: 12px;">
+            <div style="background:var(--bg-card-subtle); padding:14px; border-radius:var(--radius-md); border:1px solid var(--border-subtle); text-align:center;">
+              <div id="dash-tan-avatar" style="width:54px; height:54px; border-radius:50%; background:var(--cosmic-purple); margin:0 auto 8px; display:flex; align-items:center; justify-content:center; font-weight:700; color:#fff;">T</div>
+              <h4 id="dash-tan-name">Tân</h4>
+              <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Kỹ thuật & Trách nhiệm</p>
+            </div>
+            <div style="background:var(--bg-card-subtle); padding:14px; border-radius:var(--radius-md); border:1px solid var(--border-subtle); text-align:center;">
+              <div id="dash-tran-avatar" style="width:54px; height:54px; border-radius:50%; background:var(--blush-pink); margin:0 auto 8px; display:flex; align-items:center; justify-content:center; font-weight:700; color:#fff;">T</div>
+              <h4 id="dash-tran-name">Trân</h4>
+              <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Tình cảm & Ấm áp</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kỷ niệm mới nhất -->
+        <div class="glass-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h3 style="font-family:'Playfair Display',serif; font-size:1.2rem;">Kỷ Niệm Gần Đây</h3>
+            <button class="btn btn-secondary btn-sm" onclick="switchView('memories')">Tất cả kỷ niệm</button>
+          </div>
+          <div id="dashboard-recent-memories-list">
+            <div class="empty-state" style="padding:20px 0;">
+              <p class="empty-state-desc">Chưa có kỷ niệm nào. Hãy cùng nhau lưu giữ khoảnh khắc đầu tiên nhé!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 2: HAI HỒ SƠ CÁ NHÂN (PROFILES: TÂN & TRÂN)
+         ======================================================================== -->
+    <section id="view-profiles" class="view-section">
+      <!-- Nút chuyển giữa Hồ sơ Tân và Hồ sơ Trân -->
+      <div class="profile-tabs">
+        <button class="profile-switch-btn active" id="btn-profile-tan" onclick="switchProfileTab('tan')">Hồ sơ Tân 👨‍💻</button>
+        <button class="profile-switch-btn" id="btn-profile-tran" onclick="switchProfileTab('tran')">Hồ sơ Trân 🌸</button>
+      </div>
+
+      <!-- Banner Hồ Sơ -->
+      <div class="glass-card profile-header-card">
+        <div class="profile-avatar-wrapper">
+          <img id="profile-display-avatar" class="profile-avatar-img" src="" alt="Avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>'">
+        </div>
+        <div style="flex:1;">
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px;">
+            <h2 class="profile-name" id="profile-display-name">Tân</h2>
+            <span class="profile-badge" id="profile-role-badge">Tài khoản cá nhân</span>
+            <span id="profile-perm-notice" class="read-only-badge" style="display:none;">🔒 Chỉ xem (Hồ sơ của đối phương)</span>
+          </div>
+          <p class="profile-bio" id="profile-display-bio">Đang cập nhật giới thiệu bản thân...</p>
+          <div style="margin-top:14px; display:flex; gap:10px;">
+            <button class="btn btn-secondary btn-sm" id="btn-edit-profile" onclick="openEditProfileModal()">✏️ Chỉnh sửa hồ sơ của tôi</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chi tiết thông tin phát triển cá nhân -->
+      <div class="grid-2">
+        <div class="glass-card">
+          <div class="profile-detail-section">
+            <h4 class="profile-detail-title">🎂 Ngày sinh / Cột mốc</h4>
+            <p id="profile-display-birth" style="font-size:0.92rem; color:var(--text-muted);">Chưa cập nhật</p>
+          </div>
+          <div class="profile-detail-section">
+            <h4 class="profile-detail-title">🎨 Sở thích & Điều yêu thích</h4>
+            <div class="profile-tags-list" id="profile-display-hobbies">
+              <span class="profile-tag-item">Chưa có sở thích nào được liệt kê</span>
+            </div>
+          </div>
+          <div class="profile-detail-section">
+            <h4 class="profile-detail-title">💡 Kỹ năng muốn rèn luyện</h4>
+            <p id="profile-display-skills" style="font-size:0.92rem; color:var(--text-muted);">Chưa cập nhật</p>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <div class="profile-detail-section">
+            <h4 class="profile-detail-title">🎯 Mục tiêu & Kế hoạch bản thân</h4>
+            <p id="profile-display-goals" style="font-size:0.92rem; color:var(--text-muted);">Chưa cập nhật</p>
+          </div>
+          <div class="profile-detail-section">
+            <h4 class="profile-detail-title">🌱 Những thay đổi tích cực đang hướng đến</h4>
+            <p id="profile-display-changes" style="font-size:0.92rem; color:var(--text-muted);">Trở thành phiên bản tốt hơn mỗi ngày vì chính mình và người thương.</p>
+          </div>
+          <div class="profile-detail-section">
+            <h4 class="profile-detail-title">🏆 Cột mốc đáng tự hào</h4>
+            <p id="profile-display-achievements" style="font-size:0.92rem; color:var(--text-muted);">Chưa cập nhật</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 3: DÒNG THỜI GIAN (TIMELINE)
+         ======================================================================== -->
+    <section id="view-timeline" class="view-section">
+      <div class="filter-bar">
+        <div>
+          <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem;">Dòng Thời Gian TxT</h3>
+          <p style="font-size:0.8rem; color:var(--text-muted);">Từng bước ngoặt và khoảnh khắc đáng nhớ trên con đường cùng nhau bước đi</p>
+        </div>
+        <button class="btn btn-primary" onclick="openCreateTimelineModal()">+ Thêm cột mốc mới</button>
+      </div>
+
+      <!-- Dòng thời gian trực quan -->
+      <div class="timeline-container" id="timeline-list-container">
+        <!-- Nội dung sẽ được render động từ Firestore -->
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 4: KỶ NIỆM & NHẬT KÝ (MEMORIES)
+         ======================================================================== -->
+    <section id="view-memories" class="view-section">
+      <div class="filter-bar">
+        <input type="text" id="memory-search-input" class="search-input" placeholder="🔍 Tìm kỷ niệm, nhật ký, lời nhắn..." oninput="handleMemoryFilter()">
+        
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <select id="memory-filter-category" class="filter-select" onchange="handleMemoryFilter()">
+            <option value="all">Tất cả danh mục</option>
+            <option value="Nhật ký chung">Nhật ký chung</option>
+            <option value="Nhật ký cá nhân">Nhật ký cá nhân</option>
+            <option value="Kỷ niệm đặc biệt">Kỷ niệm đặc biệt</option>
+            <option value="Câu nói đáng nhớ">Câu nói đáng nhớ</option>
+            <option value="Lời nhắn gửi">Lời nhắn gửi</option>
+            <option value="Bức thư gửi tương lai">Bức thư gửi tương lai</option>
+            <option value="Bài học & Trưởng thành">Bài học & Trưởng thành</option>
+          </select>
+
+          <select id="memory-filter-scope" class="filter-select" onchange="handleMemoryFilter()">
+            <option value="all">Tất cả phạm vi</option>
+            <option value="shared">Kỷ niệm chung</option>
+            <option value="personal">Dữ liệu cá nhân</option>
+          </select>
+
+          <button class="btn btn-primary" onclick="openCreateMemoryModal()">+ Viết kỷ niệm</button>
+        </div>
+      </div>
+
+      <!-- Lưới kỷ niệm -->
+      <div class="grid-3" id="memories-grid-container">
+        <!-- Render động qua JavaScript -->
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 5: MỤC TIÊU & PHÁT TRIỂN (GOALS)
+         ======================================================================== -->
+    <section id="view-goals" class="view-section">
+      <div class="filter-bar">
+        <div style="display:flex; gap:6px; flex-wrap:wrap;" id="goal-tab-filters">
+          <button class="btn btn-sm btn-secondary active" onclick="filterGoals('all', this)">Tất cả</button>
+          <button class="btn btn-sm btn-secondary" onclick="filterGoals('shared', this)">Mục tiêu chung</button>
+          <button class="btn btn-sm btn-secondary" onclick="filterGoals('tan', this)">Mục tiêu của Tân</button>
+          <button class="btn btn-sm btn-secondary" onclick="filterGoals('tran', this)">Mục tiêu của Trân</button>
+        </div>
+        <button class="btn btn-primary" onclick="openCreateGoalModal()">+ Thêm mục tiêu</button>
+      </div>
+
+      <!-- Lưới mục tiêu -->
+      <div class="grid-3" id="goals-grid-container">
+        <!-- Render động qua JavaScript -->
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 6: ĐIỀU MUỐN TRẢI NGHIỆM (BUCKET LIST)
+         ======================================================================== -->
+    <section id="view-bucket" class="view-section">
+      <div class="filter-bar">
+        <div>
+          <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem;">Những Điều Muốn Thực Hiện</h3>
+          <p style="font-size:0.8rem; color:var(--text-muted);">Những nơi muốn đi, món muốn ăn và những trải nghiệm cùng nhau tạo dựng</p>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <select id="bucket-filter-status" class="filter-select" onchange="renderBucketList()">
+            <option value="all">Tất cả trạng thái</option>
+            <option value="planned">Đang lên kế hoạch</option>
+            <option value="completed">Đã hoàn thành</option>
+          </select>
+          <button class="btn btn-primary" onclick="openCreateBucketModal()">+ Thêm dự định</button>
+        </div>
+      </div>
+
+      <div class="grid-2" id="bucket-list-container">
+        <!-- Render động qua JavaScript -->
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 7: THƯ VIỆN PHƯƠNG TIỆN (MEDIA)
+         ======================================================================== -->
+    <section id="view-media" class="view-section">
+      <div class="filter-bar">
+        <div>
+          <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem;">Thư Viện Ảnh, Video & Âm Thanh</h3>
+          <p style="font-size:0.8rem; color:var(--text-muted);">Kho lưu trữ trực tiếp trên Firebase Storage được bảo vệ phân quyền</p>
+        </div>
+        <button class="btn btn-primary" onclick="openUploadMediaModal()">☁️ Tải lên phương tiện</button>
+      </div>
+
+      <div class="media-grid" id="media-gallery-container">
+        <!-- Render động qua JavaScript -->
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 8: THÙNG RÁC & KHÔI PHỤC (TRASH BIN)
+         ======================================================================== -->
+    <section id="view-trash" class="view-section">
+      <div class="glass-card" style="margin-bottom:20px;">
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.25rem; margin-bottom:6px;">🗑️ Thùng Rác Dữ Liệu</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted);">
+          Các bản ghi đã xóa mềm (soft delete) sẽ nằm tại đây. Bạn có thể khôi phục lại bất kỳ lúc nào hoặc xóa vĩnh viễn nếu bạn là chủ sở hữu bản ghi.
+        </p>
+      </div>
+
+      <div class="glass-card trash-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Loại dữ liệu</th>
+              <th>Tiêu đề / Nội dung</th>
+              <th>Phạm vi</th>
+              <th>Thời điểm xóa</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="trash-table-body">
+            <!-- Render động các bản ghi bị soft-delete -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 9: SAO LƯU, XUẤT/NHẬP & CÀI ĐẶT (SETTINGS & BACKUP)
+         ======================================================================== -->
+    <section id="view-settings" class="view-section">
+      <div class="grid-2">
+        <!-- Khối Xuất dữ liệu (Export) -->
+        <div class="glass-card">
+          <h3 style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:8px;">📦 Xuất Sao Lưu Dữ Liệu</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:18px;">
+            Xuất dữ liệu toàn bộ kỷ niệm, cột mốc, mục tiêu về máy tính hoặc điện thoại để lưu giữ an toàn lâu dài.
+          </p>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button class="btn btn-primary" onclick="exportDataToJSON()">
+              📥 Tải xuống bản sao lưu JSON (Toàn bộ)
+            </button>
+            <button class="btn btn-secondary" onclick="exportDataToCSV()">
+              📊 Tải xuống file CSV (Dễ đọc trên Excel)
+            </button>
+          </div>
+          <div style="margin-top:14px; font-size:0.75rem; color:var(--text-sub); border-left: 2px solid var(--border-glow); padding-left: 8px;">
+            * Lưu ý: File JSON chứa toàn bộ metadata, văn bản và đường dẫn liên kết file media. File âm thanh/ảnh/video lớn được bảo vệ an toàn trên Firebase Storage.
+          </div>
+        </div>
+
+        <!-- Khối Nhập dữ liệu (Import & Khôi phục) -->
+        <div class="glass-card">
+          <h3 style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:8px;">♻️ Khôi Phục Từ Bản Sao Lưu</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:18px;">
+            Nhập file sao lưu JSON hợp lệ đã xuất trước đó để khôi phục dữ liệu đã mất.
+          </p>
+          <div class="form-group">
+            <input type="file" id="import-json-file" accept=".json" class="form-control" onchange="handleFileSelectForImport(event)">
+          </div>
+          <button class="btn btn-gold" id="btn-start-import" disabled onclick="executeDataImport()">
+            Khôi phục dữ liệu
+          </button>
+          <div id="import-preview-box" style="margin-top:12px; font-size:0.82rem; color:var(--lavender-glow);"></div>
+        </div>
+      </div>
+
+      <!-- Khối Thông tin hệ thống & Bảo mật phân quyền -->
+      <div class="glass-card" style="margin-top:20px;">
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:8px;">🛡️ Trạng Thái Hệ Thống & Bảo Mật TxT</h3>
+        <div class="grid-3" style="font-size:0.85rem; color:var(--text-muted);">
+          <div>
+            <strong>Trạng thái kết nối:</strong> <span id="sys-conn-status" style="color:var(--status-warning)">Đang kiểm tra...</span>
+          </div>
+          <div>
+            <strong>Tài khoản hiện tại:</strong> <span id="sys-current-user">Chưa đăng nhập</span>
+          </div>
+          <div>
+            <strong>Phiên bản ứng dụng:</strong> <span>TxT v1.0.0 (Cosmic Single File)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /app-root -->
+
+  <!-- ==========================================================================
+       THANH ĐIỀU HƯỚNG DƯỚI ĐÁY CHO DI ĐỘNG (MOBILE DOCK BAR)
+       ========================================================================== -->
+  <nav class="mobile-dock">
+    <button class="mobile-dock-btn active" onclick="switchView('dashboard')">
+      <span class="mobile-dock-icon">🏠</span>
+      <span>Tổng quan</span>
+    </button>
+    <button class="mobile-dock-btn" onclick="switchView('timeline')">
+      <span class="mobile-dock-icon">⏳</span>
+      <span>Cột mốc</span>
+    </button>
+    <button class="mobile-dock-btn" onclick="switchView('memories')">
+      <span class="mobile-dock-icon">📖</span>
+      <span>Kỷ niệm</span>
+    </button>
+    <button class="mobile-dock-btn" onclick="switchView('goals')">
+      <span class="mobile-dock-icon">🎯</span>
+      <span>Mục tiêu</span>
+    </button>
+    <button class="mobile-dock-btn" onclick="switchView('profiles')">
+      <span class="mobile-dock-icon">👤</span>
+      <span>Hồ sơ</span>
+    </button>
+  </nav>
+
+  <!-- ==========================================================================
+       CÁC MODAL HỘP THOẠI NGHIỆP VỤ (DIALOGS)
+       ========================================================================== -->
+
+  <!-- 1. Modal Đăng Nhập Firebase Auth -->
+  <div class="modal-overlay" id="modal-login">
+    <div class="modal-box" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Đăng Nhập Không Gian TxT</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-login')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">
+          Website được bảo vệ riêng tư. Chỉ có 2 tài khoản Tân và Trân được cấp quyền đăng nhập.
+        </p>
+        <div class="form-group">
+          <label class="form-label">Email tài khoản</label>
+          <input type="email" id="login-email" class="form-control" placeholder="tan@example.com hoặc tran@example.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mật khẩu</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <div id="login-error-msg" style="color:#ff6b7e; font-size:0.82rem; margin-bottom:12px; display:none;"></div>
+        <button class="btn btn-primary" style="width:100%;" id="btn-submit-login" onclick="handleLoginSubmit()">Đăng nhập</button>
+        <div style="text-align:center; margin-top:14px;">
+          <a href="javascript:void(0)" onclick="handleForgotPassword()" style="font-size:0.8rem; color:var(--lavender-glow); text-decoration:none;">Quên mật khẩu?</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Modal Tạo / Sửa Kỷ Niệm (Memory Modal) -->
+  <div class="modal-overlay" id="modal-memory">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="memory-modal-title">Viết Kỷ Niệm Mới</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-memory')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="memory-form-id">
+        <div class="form-group">
+          <label class="form-label">Tiêu đề kỷ niệm *</label>
+          <input type="text" id="memory-form-title" class="form-control" placeholder="Ví dụ: Buổi tối cùng nhau xem phim dưới mưa...">
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Ngày kỷ niệm *</label>
+            <input type="date" id="memory-form-date" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Danh mục *</label>
+            <select id="memory-form-category" class="form-control">
+              <option value="Nhật ký chung">Nhật ký chung</option>
+              <option value="Nhật ký cá nhân">Nhật ký cá nhân</option>
+              <option value="Kỷ niệm đặc biệt">Kỷ niệm đặc biệt</option>
+              <option value="Câu nói đáng nhớ">Câu nói đáng nhớ</option>
+              <option value="Lời nhắn gửi">Lời nhắn gửi</option>
+              <option value="Bức thư gửi tương lai">Bức thư gửi tương lai</option>
+              <option value="Bài học & Trưởng thành">Bài học & Trưởng thành</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Phạm vi chia sẻ *</label>
+            <select id="memory-form-scope" class="form-control">
+              <option value="shared">Dữ liệu chung (Cả hai cùng xem và sửa)</option>
+              <option value="personal">Dữ liệu cá nhân (Chỉ tôi được sửa/xóa, người kia chỉ xem)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Thẻ từ khóa (cách nhau bởi dấu phẩy)</label>
+            <input type="text" id="memory-form-tags" class="form-control" placeholder="hạnh phúc, chuyến đi, kỷ niệm...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nội dung câu chuyện *</label>
+          <textarea id="memory-form-content" class="form-control" style="min-height: 140px;" placeholder="Lưu giữ từng dòng cảm xúc của bạn..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Đường dẫn ảnh/video đính kèm (URL hoặc từ Thư viện)</label>
+          <input type="text" id="memory-form-media" class="form-control" placeholder="https://... hoặc tải lên qua Thư viện Media">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-memory')">Hủy bỏ</button>
+        <button class="btn btn-primary" id="btn-save-memory" onclick="saveMemory()">Lưu kỷ niệm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Modal Xem Chi Tiết Kỷ Niệm (View Memory Modal) -->
+  <div class="modal-overlay" id="modal-view-memory">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="memory-badge" id="view-memory-badge">Danh mục</span>
+        <button class="modal-close-btn" onclick="closeModal('modal-view-memory')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h2 id="view-memory-title" style="font-family:'Playfair Display',serif; font-size:1.5rem; margin-bottom:8px;">Tiêu đề</h2>
+        <div style="font-size:0.8rem; color:var(--text-sub); margin-bottom:16px;" id="view-memory-meta">Ngày -- / Tác giả --</div>
+        <div id="view-memory-media-container" style="margin-bottom:16px;"></div>
+        <div id="view-memory-content" style="font-size:0.95rem; line-height:1.7; white-space:pre-wrap; color:var(--text-main);">Nội dung</div>
+      </div>
+      <div class="modal-footer" id="view-memory-footer-actions">
+        <!-- Nút sửa/xóa nếu đủ quyền -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Modal Tạo / Sửa Cột Mốc (Timeline Modal) -->
+  <div class="modal-overlay" id="modal-timeline">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="timeline-modal-title">Cột Mốc Hành Trình Mới</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-timeline')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="timeline-form-id">
+        <div class="form-group">
+          <label class="form-label">Tiêu đề cột mốc *</label>
+          <input type="text" id="timeline-form-title" class="form-control" placeholder="Ví dụ: Ngày đầu tiên gặp gỡ...">
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Ngày diễn ra *</label>
+            <input type="date" id="timeline-form-date" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Người liên quan</label>
+            <select id="timeline-form-people" class="form-control">
+              <option value="both">Cả Tân & Trân</option>
+              <option value="tan">Chỉ Tân</option>
+              <option value="tran">Chỉ Trân</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Địa điểm</label>
+            <input type="text" id="timeline-form-location" class="form-control" placeholder="Đảo Quân Sự / Đà Lạt / Quán cafe...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phạm vi *</label>
+            <select id="timeline-form-scope" class="form-control">
+              <option value="shared">Cột mốc chung</option>
+              <option value="personal">Cột mốc cá nhân</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Câu chuyện chi tiết *</label>
+          <textarea id="timeline-form-story" class="form-control" style="min-height: 110px;" placeholder="Kể lại khoảnh khắc ấy..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ảnh hoặc video đính kèm (URL)</label>
+          <input type="text" id="timeline-form-media" class="form-control" placeholder="https://...">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-timeline')">Hủy</button>
+        <button class="btn btn-primary" id="btn-save-timeline" onclick="saveTimeline()">Lưu cột mốc</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Modal Tạo / Sửa Mục Tiêu (Goal Modal) -->
+  <div class="modal-overlay" id="modal-goal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="goal-modal-title">Thêm Mục Tiêu Mới</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-goal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="goal-form-id">
+        <div class="form-group">
+          <label class="form-label">Tên mục tiêu *</label>
+          <input type="text" id="goal-form-title" class="form-control" placeholder="Ví dụ: Tiết kiệm cho chuyến du lịch cùng nhau...">
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Mục tiêu thuộc về *</label>
+            <select id="goal-form-group" class="form-control">
+              <option value="shared">Mục tiêu chung của hai đứa</option>
+              <option value="tan">Mục tiêu cá nhân của Tân</option>
+              <option value="tran">Mục tiêu cá nhân của Trân</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Thời hạn</label>
+            <select id="goal-form-timeframe" class="form-control">
+              <option value="short_term">Ngắn hạn (dưới 6 tháng)</option>
+              <option value="long_term">Dài hạn (trên 6 tháng)</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Mức độ ưu tiên</label>
+            <select id="goal-form-priority" class="form-control">
+              <option value="high">Ưu tiên cao</option>
+              <option value="medium">Trung bình</option>
+              <option value="low">Thấp</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Trạng thái hiện tại</label>
+            <select id="goal-form-status" class="form-control">
+              <option value="in_progress">Đang thực hiện</option>
+              <option value="not_started">Chưa bắt đầu</option>
+              <option value="completed">Đã hoàn thành</option>
+              <option value="paused">Tạm hoãn</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tiến độ hoàn thành: <span id="goal-progress-num">0</span>%</label>
+          <input type="range" id="goal-form-progress" min="0" max="100" value="0" class="form-control" oninput="document.getElementById('goal-progress-num').textContent = this.value">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Các bước nhỏ (mỗi dòng một bước)</label>
+          <textarea id="goal-form-subtasks" class="form-control" placeholder="Bước 1: Lên danh sách điểm đến&#10;Bước 2: Tìm hiểu chi phí&#10;Bước 3: Mở sổ tiết kiệm..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-goal')">Hủy</button>
+        <button class="btn btn-primary" id="btn-save-goal" onclick="saveGoal()">Lưu mục tiêu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Modal Tạo / Sửa Điều Muốn Trải Nghiệm (Bucket List Modal) -->
+  <div class="modal-overlay" id="modal-bucket">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="bucket-modal-title">Điều Muốn Cùng Nhau Thực Hiện</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-bucket')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="bucket-form-id">
+        <div class="form-group">
+          <label class="form-label">Tên trải nghiệm *</label>
+          <input type="text" id="bucket-form-title" class="form-control" placeholder="Ví dụ: Cùng nhau ngắm bình minh trên đỉnh núi...">
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Danh mục</label>
+            <select id="bucket-form-category" class="form-control">
+              <option value="Địa điểm muốn đến">Địa điểm muốn đến</option>
+              <option value="Món ăn muốn thử">Món ăn muốn thử</option>
+              <option value="Hoạt động cùng nhau">Hoạt động cùng nhau</option>
+              <option value="Phim muốn xem">Phim muốn xem</option>
+              <option value="Kỷ niệm muốn tạo">Kỷ niệm muốn tạo</option>
+              <option value="Kỹ năng muốn học">Kỹ năng muốn học</option>
+              <option value="Dự án cùng làm">Dự án cùng làm</option>
+              <option value="Kế hoạch cá nhân">Kế hoạch cá nhân</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phạm vi</label>
+            <select id="bucket-form-scope" class="form-control">
+              <option value="shared">Dành cho cả hai</option>
+              <option value="personal">Dành riêng cho tôi</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ghi chú hoặc kế hoạch cụ thể</label>
+          <textarea id="bucket-form-notes" class="form-control" placeholder="Mẹo, thời điểm thích hợp hoặc chi tiết mong muốn..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-bucket')">Hủy</button>
+        <button class="btn btn-primary" id="btn-save-bucket" onclick="saveBucketItem()">Lưu trải nghiệm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Modal Chỉnh Sửa Hồ Sơ Cá Nhân -->
+  <div class="modal-overlay" id="modal-edit-profile">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Cập Nhật Hồ Sơ Của Bạn</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-edit-profile')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Tên hiển thị *</label>
+          <input type="text" id="prof-form-name" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ảnh đại diện (URL ảnh)</label>
+          <input type="text" id="prof-form-avatar" class="form-control" placeholder="https://... hoặc link từ Thư viện">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ngày sinh</label>
+          <input type="date" id="prof-form-birth" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Giới thiệu bản thân (Bio)</label>
+          <textarea id="prof-form-bio" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sở thích (ngăn cách bằng dấu phẩy)</label>
+          <input type="text" id="prof-form-hobbies" class="form-control" placeholder="Chơi game, nghe nhạc, code, nấu ăn...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Kỹ năng muốn phát triển</label>
+          <input type="text" id="prof-form-skills" class="form-control" placeholder="Full-stack development, Ngoại ngữ...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mục tiêu & Định hướng cá nhân</label>
+          <textarea id="prof-form-goals" class="form-control"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-edit-profile')">Hủy</button>
+        <button class="btn btn-primary" id="btn-save-profile" onclick="saveProfileData()">Lưu hồ sơ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Modal Tải Lên Phương Tiện Firebase Storage -->
+  <div class="modal-overlay" id="modal-upload-media">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Tải Lên Phương Tiện Mới</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-upload-media')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Chọn file từ thiết bị (Ảnh / Video / Âm thanh) *</label>
+          <input type="file" id="media-file-input" class="form-control" accept="image/*,video/*,audio/*">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tên / Chú thích file *</label>
+          <input type="text" id="media-caption-input" class="form-control" placeholder="Ví dụ: Chuyến đi biển cùng nhau...">
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Phạm vi lưu trữ *</label>
+            <select id="media-scope-input" class="form-control">
+              <option value="shared">Chung (Cả hai cùng xem và xóa)</option>
+              <option value="personal">Cá nhân (Chỉ tôi được xóa)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Album phân loại</label>
+            <input type="text" id="media-album-input" class="form-control" placeholder="Kỷ niệm / Du lịch / Game...">
+          </div>
+        </div>
+        <!-- Thanh trạng thái upload -->
+        <div id="upload-progress-wrapper" style="display:none; margin-top:12px;">
+          <div style="font-size:0.8rem; margin-bottom:4px; color:var(--champagne-gold);" id="upload-status-text">Đang tải lên Firebase Storage...</div>
+          <div class="progress-track">
+            <div class="progress-fill" id="upload-progress-bar" style="width:0%;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-upload-media')">Đóng</button>
+        <button class="btn btn-primary" id="btn-submit-upload" onclick="handleMediaUpload()">Bắt đầu tải lên</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Modal Hướng Dẫn Cấu Hình Firebase -->
+  <div class="modal-overlay" id="modal-config-help">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Hướng Dẫn Cấu Hình Firebase</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-config-help')">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size:0.88rem; line-height:1.6; color:var(--text-muted);">
+        <p style="margin-bottom:10px;">Để website hoạt động độc lập và lưu trữ vĩnh viễn trên đám mây của riêng bạn:</p>
+        <ol style="padding-left:20px; display:flex; flex-direction:column; gap:8px;">
+          <li>Mở <a href="https://console.firebase.google.com" target="_blank" style="color:var(--lavender-glow);">Firebase Console</a> và tạo 1 Project mới (ví dụ: <code>project-txt</code>).</li>
+          <li>Thêm Web App và copy đoạn cấu hình <code>firebaseConfig</code>.</li>
+          <li>Mở file <code>index.html</code> này trong trình soạn thảo (VS Code), tìm đến dòng comment <code>// ===== BẮT ĐẦU CẤU HÌNH FIREBASE =====</code> và dán cấu hình vào.</li>
+          <li>Bật <strong>Email/Password</strong> trong mục <strong>Authentication</strong> và tạo 2 tài khoản cho Tân và Trân.</li>
+          <li>Sao chép UID của Tân và Trân dán vào <code>TAN_UID</code> và <code>TRAN_UID</code> trong <code>index.html</code>.</li>
+          <li>Dán nội dung <code>firestore.rules</code> và <code>storage.rules</code> vào Firebase Console.</li>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal('modal-config-help')">Đã hiểu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HỆ THỐNG TOAST CONTAINER -->
+  <div id="toast-container"></div>
+
+  <!-- ==========================================================================
+       20. JAVASCRIPT MODULE CHÍNH (FIREBASE SDK & APP LOGIC)
+       ========================================================================== -->
+  <script type="module">
+    // =========================================================================
+    // IMPORT FIREBASE WEB SDK (PHIÊN BẢN V11.0.2 DẠNG ES MODULES CHUẨN CDN)
+    // =========================================================================
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      signOut, 
+      onAuthStateChanged,
+      sendPasswordResetEmail
+    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    import { 
+      getFirestore, 
+      collection, 
+      doc, 
+      getDoc, 
+      getDocs, 
+      setDoc, 
+      addDoc, 
+      updateDoc, 
+      deleteDoc, 
+      query, 
+      where, 
+      orderBy, 
+      onSnapshot,
+      serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+    import { 
+      getStorage, 
+      ref as storageRef, 
+      uploadBytesResumable, 
+      getDownloadURL, 
+      deleteObject 
+    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
+
+    // =========================================================================
+    // ===== BẮT ĐẦU CẤU HÌNH FIREBASE VÀ TÀI KHOẢN (BẮT BUỘC ĐIỀN THẬT) =====
+    // =========================================================================
+    // [HƯỚNG DẪN DÀNH CHO BẠN]:
+    // 1. Vào https://console.firebase.google.com/ -> Project Settings -> General
+    // 2. Kéo xuống mục "Your apps" -> chọn Web app (</>) -> Copy object firebaseConfig
+    // 3. Thay thế các giá trị bên dưới bằng thông tin thật của bạn:
+    const firebaseConfig = {
+  apiKey: "AIzaSyAEPFpiCrcN6uLBkjdCBXowPzpzmmICL4k",
+  authDomain: "hanhtrinhtruongthanh-2026.firebaseapp.com",
+  databaseURL: "https://hanhtrinhtruongthanh-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hanhtrinhtruongthanh-2026",
+  storageBucket: "hanhtrinhtruongthanh-2026.firebasestorage.app",
+  messagingSenderId: "308619340209",
+  appId: "1:308619340209:web:877315130862673823f590",
+  measurementId: "G-QBKQDR5C9V"
+};
+
+    // [UID HAI TÀI KHOẢN ĐƯỢC CẤP PHÉP TRUY CẬP TXT]:
+    // Vào Authentication -> Users -> Sao chép UID của Tân và Trân dán vào đây:
+    const TAN_UID = "CHnyLXXd1kZySJfB26aHxNhM4043";
+    const TRAN_UID = "3E3vzLPGoGe9cLSdMVtT90JyuXE3";
+    // ===== KẾT THÚC CẤU HÌNH FIREBASE =====
+
+    // Kiểm tra trạng thái cấu hình
+    const isFirebaseConfigured = Boolean(
+      firebaseConfig.apiKey && 
+      !firebaseConfig.apiKey.includes("YOUR_API_KEY") &&
+      firebaseConfig.projectId && 
+      !firebaseConfig.projectId.includes("YOUR_PROJECT_ID")
+    );
+
+    // =========================================================================
+    // KHỞI TẠO CÁC DỊCH VỤ FIREBASE HOẶC CHẾ ĐỘ DEMO
+    // =========================================================================
+    let app, auth, db, storage;
+    let isDemoMode = !isFirebaseConfigured;
+
+    if (isFirebaseConfigured) {
+      try {
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+        storage = getStorage(app);
+        console.log("TxT: Đã kết nối thành công với Firebase Backend!");
+      } catch (err) {
+        console.warn("Lỗi khởi tạo Firebase, kích hoạt chế độ Demo an toàn:", err);
+        isDemoMode = true;
+      }
+    } else {
+      console.warn("TxT: Chưa phát hiện cấu hình Firebase thật. Đang khởi chạy Chế độ Trải nghiệm thử.");
+    }
+
+    // =========================================================================
+    // BIẾN TRẠNG THÁI TOÀN CỤC CỦA ỨNG DỤNG (APPLICATION STATE)
+    // =========================================================================
+    let currentUser = null;          // Người dùng đang đăng nhập ({ uid, email, role: 'tan'|'tran' })
+    let currentProfileTab = 'tan';   // Tab hồ sơ đang xem ('tan' hoặc 'tran')
+    let memoriesData = [];           // Danh sách kỷ niệm
+    let timelineData = [];           // Danh sách cột mốc dòng thời gian
+    let goalsData = [];              // Danh sách mục tiêu
+    let bucketData = [];             // Danh sách điều muốn làm
+    let mediaData = [];              // Danh sách file media
+    let currentGoalFilter = 'all';
+
+    // Dữ liệu mẫu khởi tạo cho 2 cột mốc ban đầu (theo yêu cầu đề bài)
+    const INITIAL_SEEDED_MILESTONES = [
+      {
+        id: "milestone-1",
+        title: "Lần đầu gặp gỡ trong Free Fire",
+        date: "2025-10-22",
+        story: "Ngày Tân và Trân lần đầu tiên chạm mặt trong thế giới ảo Free Fire. Một ván game tình cờ mở đầu cho một câu chuyện đời thực tuyệt đẹp.",
+        people: "both",
+        scope: "shared",
+        location: "Đảo Quân Sự - Free Fire",
+        category: "Kỷ niệm đầu tiên",
+        isDeleted: false,
+        createdBy: "system"
+      },
+      {
+        id: "milestone-2",
+        title: "Chính thức xác nhận mối quan hệ",
+        date: "2026-09-15",
+        story: "Ngày hai người trao nhau lời hẹn ước chính thức, bắt đầu cùng nhau viết nên hành trình một câu chuyện của hai cuộc đời.",
+        people: "both",
+        scope: "shared",
+        location: "Khoảnh khắc đặc biệt",
+        category: "Cột mốc tình yêu",
+        isDeleted: false,
+        createdBy: "system"
+      }
+    ];
+
+    // =========================================================================
+    // HỆ THỐNG THÔNG BÁO TOAST UI
+    // =========================================================================
+    window.showToast = function(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast-msg ${type}`;
+      
+      const icons = {
+        success: '✨',
+        error: '⚠️',
+        warning: '⚡',
+        info: '💫'
+      };
+      
+      toast.innerHTML = `<span>${icons[type] || '💫'}</span><span>${message}</span>`;
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    };
+
+    // =========================================================================
+    // ĐIỀU HƯỚNG VIEW & MODAL
+    // =========================================================================
+    window.switchView = function(viewName) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active-view'));
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.mobile-dock-btn').forEach(btn => btn.classList.remove('active'));
+
+      const target = document.getElementById(`view-${viewName}`);
+      if (target) {
+        target.classList.add('active-view');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Đánh dấu active cho navigation tabs
+      const tabBtns = Array.from(document.querySelectorAll('.nav-tab-btn'));
+      const activeTab = tabBtns.find(b => b.getAttribute('onclick')?.includes(viewName));
+      if (activeTab) activeTab.classList.add('active');
+
+      const dockBtns = Array.from(document.querySelectorAll('.mobile-dock-btn'));
+      const activeDock = dockBtns.find(b => b.getAttribute('onclick')?.includes(viewName));
+      if (activeDock) activeDock.classList.add('active');
+    };
+
+    window.openModal = function(id) {
+      const m = document.getElementById(id);
+      if (m) m.classList.add('active');
+    };
+
+    window.closeModal = function(id) {
+      const m = document.getElementById(id);
+      if (m) m.classList.remove('active');
+    };
+
+    window.openLoginModal = () => openModal('modal-login');
+    window.openConfigHelpModal = () => openModal('modal-config-help');
+
+    // =========================================================================
+    // BỘ ĐẾM THỜI GIAN HÀNH TRÌNH (JOURNEY COUNTER)
+    // =========================================================================
+    function calculateDaysBetween(startDateStr) {
+      const start = new Date(startDateStr);
+      const now = new Date();
+      const diffTime = now - start;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays >= 0 ? diffDays : 0;
+    }
+
+    function updateCounters() {
+      // 22/10/2025: Ngày gặp nhau lần đầu
+      const metDays = calculateDaysBetween("2025-10-22");
+      // 15/09/2026: Ngày chính thức yêu
+      const loveDays = calculateDaysBetween("2026-09-15");
+
+      const metEl = document.getElementById("days-met-count");
+      const loveEl = document.getElementById("days-love-count");
+
+      if (metEl) metEl.textContent = `${metDays} Ngày`;
+      if (loveEl) loveEl.textContent = `${loveDays} Ngày`;
+    }
+
+    // =========================================================================
+    // TRÌNH PHÁT NHẠC AMBIENT VŨ TRỤ (WEB AUDIO SYNTHESIZER & REAL PLAYER)
+    // =========================================================================
+    class CosmicAmbientPlayer {
+      constructor() {
+        this.ctx = null;
+        this.isPlaying = false;
+        this.volume = 0.4;
+        this.oscillators = [];
+        this.gainNode = null;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+          this.gainNode = this.ctx.createGain();
+          this.gainNode.gain.setValueAtTime(this.volume, this.ctx.currentTime);
+          this.gainNode.connect(this.ctx.destination);
+        }
+      }
+
+      start() {
+        this.init();
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+
+        // Hợp âm Celestial Lofi ấm áp & êm dịu (Frequencies: Cmaj9 chord / Cosmic Ambient)
+        const notes = [130.81, 164.81, 196.00, 246.94, 293.66, 392.00]; // C3, E3, G3, B3, D4, G4
+        this.oscillators = notes.map((freq, i) => {
+          const osc = this.ctx.createOscillator();
+          const filter = this.ctx.createBiquadFilter();
+          const panner = this.ctx.createStereoPanner ? this.ctx.createStereoPanner() : null;
+
+          osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+          // Bộ lọc âm ấm áp (lowpass filter)
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(650 + (i * 80), this.ctx.currentTime);
+
+          osc.connect(filter);
+          if (panner) {
+            panner.pan.setValueAtTime((i % 2 === 0 ? -0.4 : 0.4), this.ctx.currentTime);
+            filter.connect(panner);
+            panner.connect(this.gainNode);
+          } else {
+            filter.connect(this.gainNode);
+          }
+
+          osc.start();
+          return osc;
+        });
+
+        this.isPlaying = true;
+        document.querySelector('.music-widget')?.classList.add('music-playing');
+        document.getElementById('music-icon').textContent = '⏸️';
+      }
+
+      stop() {
+        this.oscillators.forEach(osc => {
+          try { osc.stop(); osc.disconnect(); } catch (e) {}
+        });
+        this.oscillators = [];
+        this.isPlaying = false;
+        document.querySelector('.music-widget')?.classList.remove('music-playing');
+        document.getElementById('music-icon').textContent = '🎵';
+      }
+
+      setVolume(val) {
+        this.volume = parseFloat(val);
+        if (this.gainNode && this.ctx) {
+          this.gainNode.gain.setValueAtTime(this.volume, this.ctx.currentTime);
+        }
+      }
+    }
+
+    const ambientPlayer = new CosmicAmbientPlayer();
+
+    document.getElementById('btn-toggle-music')?.addEventListener('click', () => {
+      if (ambientPlayer.isPlaying) {
+        ambientPlayer.stop();
+        showToast("Đã tạm dừng nhạc không gian.", "info");
+      } else {
+        ambientPlayer.start();
+        showToast("Đang phát âm thanh Cosmic Ambient du dương...", "success");
+      }
+    });
+
+    document.getElementById('music-vol')?.addEventListener('input', (e) => {
+      ambientPlayer.setVolume(e.target.value);
+    });
+
+    // =========================================================================
+    // CHẾ ĐỘ SÁNG / TỐI (LIGHT / DARK THEME)
+    // =========================================================================
+    const savedTheme = localStorage.getItem('txt_theme') || 'dark';
+    document.body.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+
+    document.getElementById('btn-toggle-theme')?.addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      const nextTheme = current === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', nextTheme);
+      localStorage.setItem('txt_theme', nextTheme);
+      updateThemeIcon(nextTheme);
+      showToast(`Đã chuyển sang giao diện ${nextTheme === 'dark' ? 'Vũ trụ huyền bí (Dark)' : 'Ánh bình minh (Light)'}`, 'info');
+    });
+
+    function updateThemeIcon(t) {
+      const icon = document.getElementById('theme-icon');
+      if (icon) icon.textContent = t === 'dark' ? '🌙' : '☀️';
+    }
+
+    // =========================================================================
+    // CANVAS HIỆU ỨNG SAO VŨ TRỤ (STARFIELD PARTICLES)
+    // =========================================================================
+    function initStarfield() {
+      const canvas = document.getElementById('starfield-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+      let w, h;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        stars = Array.from({ length: Math.floor(w * h / 9000) }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          radius: Math.random() * 1.4 + 0.3,
+          alpha: Math.random() * 0.8 + 0.2,
+          speed: Math.random() * 0.015 + 0.005,
+          color: Math.random() > 0.3 ? '#ffffff' : (Math.random() > 0.5 ? '#ff70a6' : '#9d4edd')
+        }));
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        for (let s of stars) {
+          s.alpha += s.speed;
+          if (s.alpha > 1 || s.alpha < 0.2) s.speed = -s.speed;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+          ctx.fillStyle = s.color;
+          ctx.globalAlpha = Math.max(0.1, Math.min(1, s.alpha));
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+    initStarfield();
+
+    // =========================================================================
+    // XÁC THỰC NGƯỜI DÙNG & KIỂM TRA PHÂN QUYỀN (FIREBASE AUTH)
+    // =========================================================================
+    window.handleLoginSubmit = async function() {
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const errEl = document.getElementById('login-error-msg');
+      const submitBtn = document.getElementById('btn-submit-login');
+
+      errEl.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Đang xác thực...";
+
+      if (!email || !password) {
+        errEl.textContent = "Vui lòng nhập đầy đủ Email và Mật khẩu.";
+        errEl.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Đăng nhập";
+        return;
+      }
+
+      // Xử lý khi chạy ở chế độ Firebase thật
+      if (!isDemoMode && auth) {
+        try {
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+
+          // Kiểm tra xem UID có thuộc về Tân hoặc Trân không
+          if (user.uid !== TAN_UID && user.uid !== TRAN_UID) {
+            await signOut(auth);
+            throw new Error("Tài khoản này không thuộc về Tân hoặc Trân. Không gian TxT được bảo vệ riêng tư.");
+          }
+
+          closeModal('modal-login');
+          showToast(`Đăng nhập thành công! Chào mừng bạn trở về TxT.`, "success");
+        } catch (error) {
+          console.error("Lỗi đăng nhập:", error);
+          let msg = "Đăng nhập thất bại.";
+          if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
+            msg = "Email hoặc mật khẩu không chính xác.";
+          } else if (error.code === 'auth/user-not-found') {
+            msg = "Tài khoản không tồn tại trên hệ thống.";
+          } else {
+            msg = error.message;
+          }
+          errEl.textContent = msg;
+          errEl.style.display = 'block';
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Đăng nhập";
+        }
+      } else {
+        // Chế độ Trải nghiệm thử (Demo Mode)
+        setTimeout(() => {
+          const isTan = email.toLowerCase().includes('tan');
+          currentUser = {
+            uid: isTan ? "demo-tan-uid" : "demo-tran-uid",
+            email: email,
+            role: isTan ? 'tan' : 'tran',
+            displayName: isTan ? "Tân" : "Trân"
+          };
+          renderUserUI();
+          closeModal('modal-login');
+          showToast(`Đăng nhập chế độ Demo với vai trò ${currentUser.displayName}!`, "success");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Đăng nhập";
+        }, 600);
+      }
+    };
+
+    window.handleForgotPassword = async function() {
+      const email = prompt("Nhập email tài khoản cần đặt lại mật khẩu:");
+      if (!email) return;
+
+      if (!isDemoMode && auth) {
+        try {
+          await sendPasswordResetEmail(auth, email);
+          alert("Firebase đã gửi email khôi phục mật khẩu. Vui lòng kiểm tra hộp thư của bạn.");
+        } catch (e) {
+          alert("Lỗi: " + e.message);
+        }
+      } else {
+        alert("Chế độ Demo: Vui lòng cấu hình Firebase Authentication để sử dụng tính năng gửi email đặt lại mật khẩu thật.");
+      }
+    };
+
+    window.handleLogout = async function() {
+      if (!confirm("Bạn có chắc chắn muốn đăng xuất khỏi TxT?")) return;
+
+      if (!isDemoMode && auth) {
+        await signOut(auth);
+      }
+      currentUser = null;
+      renderUserUI();
+      showToast("Đã đăng xuất an toàn.", "info");
+    };
+
+    function renderUserUI() {
+      const container = document.getElementById('user-status-container');
+      const sysUser = document.getElementById('sys-current-user');
+      const greetingEl = document.getElementById('hero-greeting-text');
+
+      if (currentUser) {
+        const isTan = currentUser.role === 'tan';
+        const roleName = isTan ? 'Tân 👨‍💻' : 'Trân 🌸';
+
+        container.innerHTML = `
+          <div class="user-pill">
+            <div class="user-pill-avatar" style="background:${isTan ? 'var(--cosmic-purple)' : 'var(--blush-pink)'}">
+              ${currentUser.displayName ? currentUser.displayName.charAt(0) : 'T'}
+            </div>
+            <span>${roleName}</span>
+            <button onclick="handleLogout()" title="Đăng xuất" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:0.9rem; margin-left:4px;">🚪</button>
+          </div>
+        `;
+        if (sysUser) sysUser.textContent = `${roleName} (${currentUser.uid})`;
+        if (greetingEl) greetingEl.textContent = `Chào ${currentUser.displayName}, cùng ghi lại hành trình hôm nay nhé! ✨`;
+      } else {
+        container.innerHTML = `
+          <button class="action-btn btn-primary" onclick="openLoginModal()">
+            <span>Đăng nhập</span>
+          </button>
+        `;
+        if (sysUser) sysUser.textContent = "Chưa đăng nhập (Khách ghé thăm)";
+        if (greetingEl) greetingEl.textContent = "Chào mừng đến với Không gian TxT";
+      }
+
+      // Cập nhật lại quyền xem/sửa ở các view
+      updateProfilePermissions();
+      renderTimeline();
+      renderMemories();
+      renderGoals();
+      renderBucketList();
+      renderMedia();
+      renderTrash();
+      updateDashboardStats();
+    }
+
+    // Lắng nghe phiên làm việc từ Firebase Auth nếu có kết nối
+    if (!isDemoMode && auth) {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const role = user.uid === TAN_UID ? 'tan' : (user.uid === TRAN_UID ? 'tran' : 'guest');
+          currentUser = {
+            uid: user.uid,
+            email: user.email,
+            role: role,
+            displayName: role === 'tan' ? 'Tân' : (role === 'tran' ? 'Trân' : 'Khách')
+          };
+          renderUserUI();
+          loadDataFromFirestore();
+        } else {
+          currentUser = null;
+          renderUserUI();
+        }
+      });
+    }
+
+    // =========================================================================
+    // DỮ LIỆU CỤC BỘ / LOCAL DEMO DATA (ĐƯỢC DÙNG KHI CHƯA ĐIỀN API KEY)
+    // =========================================================================
+    function initLocalData() {
+      // Tải từ localStorage nếu có bản lưu
+      const savedMemories = localStorage.getItem('txt_memories');
+      const savedTimeline = localStorage.getItem('txt_timeline');
+      const savedGoals = localStorage.getItem('txt_goals');
+      const savedBucket = localStorage.getItem('txt_bucket');
+      const savedMedia = localStorage.getItem('txt_media');
+
+      memoriesData = savedMemories ? JSON.parse(savedMemories) : [
+        {
+          id: "mem-seed-1",
+          title: "Cuộc trò chuyện thâu đêm đầu tiên",
+          date: "2025-10-23",
+          authorName: "Tân",
+          category: "Kỷ niệm đặc biệt",
+          scope: "shared",
+          content: "Sau trận game hôm ấy, hai đứa bắt đầu nói chuyện nhiều hơn. Từ những câu chuyện vu vơ về cuộc sống đến những chia sẻ chân thành nhất...",
+          isDeleted: false,
+          ownerUid: "tan",
+          createdBy: "tan"
+        }
+      ];
+
+      timelineData = savedTimeline ? JSON.parse(savedTimeline) : [...INITIAL_SEEDED_MILESTONES];
+
+      goalsData = savedGoals ? JSON.parse(savedGoals) : [
+        {
+          id: "goal-seed-1",
+          title: "Cùng nhau hoàn thành chuyến du lịch đầu tiên",
+          targetGroup: "shared",
+          timeframe: "short_term",
+          priority: "high",
+          status: "in_progress",
+          progress: 50,
+          subtasks: [
+            { id: "st-1", text: "Chọn địa điểm phù hợp", completed: true },
+            { id: "st-2", text: "Lên ngân sách chi tiết", completed: true },
+            { id: "st-3", text: "Đặt vé và lịch trình", completed: false }
+          ],
+          scope: "shared",
+          isDeleted: false,
+          ownerUid: "shared",
+          createdBy: "shared"
+        }
+      ];
+
+      bucketData = savedBucket ? JSON.parse(savedBucket) : [
+        {
+          id: "buck-1",
+          title: "Cùng nhau ngắm bình minh trên đỉnh núi",
+          category: "Địa điểm muốn đến",
+          scope: "shared",
+          status: "planned",
+          notes: "Mang theo trà ấm và chụp lại khoảnh khắc bình minh tuyệt đẹp.",
+          isDeleted: false,
+          ownerUid: "shared"
+        },
+        {
+          id: "buck-2",
+          title: "Nấu một bữa ăn tối ấm cúng cùng nhau",
+          category: "Hoạt động cùng nhau",
+          scope: "shared",
+          status: "completed",
+          notes: "Một buổi tối giản dị mà đầy ắp tiếng cười.",
+          isDeleted: false,
+          ownerUid: "shared"
+        }
+      ];
+
+      mediaData = savedMedia ? JSON.parse(savedMedia) : [];
+
+      renderUserUI();
+    }
+
+    function saveLocalData() {
+      if (isDemoMode) {
+        localStorage.setItem('txt_memories', JSON.stringify(memoriesData));
+        localStorage.setItem('txt_timeline', JSON.stringify(timelineData));
+        localStorage.setItem('txt_goals', JSON.stringify(goalsData));
+        localStorage.setItem('txt_bucket', JSON.stringify(bucketData));
+        localStorage.setItem('txt_media', JSON.stringify(mediaData));
+      }
+    }
+
+    // =========================================================================
+    // ĐỌC DỮ LIỆU TỪ FIRESTORE (KHI CÓ FIREBASE THẬT)
+    // =========================================================================
+    async function loadDataFromFirestore() {
+      if (!db || isDemoMode) return;
+
+      try {
+        // Lấy dữ liệu Dòng thời gian
+        const tlQuery = query(collection(db, "timeline"), orderBy("date", "asc"));
+        onSnapshot(tlQuery, (snapshot) => {
+          timelineData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          if (timelineData.length === 0) {
+            // Tự động gieo 2 cột mốc ban đầu nếu cơ sở dữ liệu trống
+            seedInitialMilestones();
+          } else {
+            renderTimeline();
+            updateDashboardStats();
+          }
+        });
+
+        // Lấy dữ liệu Kỷ niệm
+        const memQuery = query(collection(db, "memories"), orderBy("date", "desc"));
+        onSnapshot(memQuery, (snapshot) => {
+          memoriesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          renderMemories();
+          updateDashboardStats();
+        });
+
+        // Lấy dữ liệu Mục tiêu
+        const goalQuery = query(collection(db, "goals"), orderBy("createdAt", "desc"));
+        onSnapshot(goalQuery, (snapshot) => {
+          goalsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          renderGoals();
+          updateDashboardStats();
+        });
+
+        // Lấy dữ liệu Bucket list
+        const buckQuery = query(collection(db, "bucket_list"), orderBy("createdAt", "desc"));
+        onSnapshot(buckQuery, (snapshot) => {
+          bucketData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          renderBucketList();
+          updateDashboardStats();
+        });
+
+        // Lấy dữ liệu Media
+        const mediaQuery = query(collection(db, "media_library"), orderBy("createdAt", "desc"));
+        onSnapshot(mediaQuery, (snapshot) => {
+          mediaData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          renderMedia();
+        });
+
+        loadProfileData();
+
+        const connEl = document.getElementById("sys-conn-status");
+        if (connEl) {
+          connEl.textContent = "Đã kết nối Firestore Đám mây trực tiếp";
+          connEl.style.color = "var(--status-success)";
+        }
+      } catch (e) {
+        console.error("Lỗi đồng bộ dữ liệu Firestore:", e);
+        showToast("Lỗi đồng bộ dữ liệu: " + e.message, "error");
+      }
+    }
+
+    async function seedInitialMilestones() {
+      if (!db || !currentUser) return;
+      try {
+        for (let m of INITIAL_SEEDED_MILESTONES) {
+          await addDoc(collection(db, "timeline"), {
+            title: m.title,
+            date: m.date,
+            story: m.story,
+            people: m.people,
+            scope: m.scope,
+            location: m.location,
+            category: m.category,
+            isDeleted: false,
+            createdBy: currentUser.uid,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          });
+        }
+        showToast("Đã khởi tạo 2 cột mốc ban đầu của Tân và Trân trên Firebase!", "success");
+      } catch (err) {
+        console.warn("Chưa thể tự gieo mốc ban đầu:", err);
+      }
+    }
+
+    // =========================================================================
+    // QUẢN LÝ HỒ SƠ CÁ NHÂN (PROFILES: TÂN & TRÂN)
+    // =========================================================================
+    const defaultProfiles = {
+      tan: {
+        displayName: "Tân",
+        avatar: "",
+        birthDate: "2003-01-01",
+        bio: "Chàng trai yêu công nghệ, trách nhiệm và luôn nỗ lực trở thành chỗ dựa vững chắc cho Trân.",
+        hobbies: "Lập trình, Chơi game, Tìm hiểu công nghệ, Nghe nhạc",
+        skills: "Software Engineering, Tư duy hệ thống, Giải quyết vấn đề",
+        goals: "Xây dựng sự nghiệp vững chắc và mang lại hạnh phúc dài lâu cho hai đứa.",
+        changes: "Học cách lắng nghe, kiên nhẫn hơn và luôn đồng hành cùng Trân trong mọi cột mốc."
+      },
+      tran: {
+        displayName: "Trân",
+        avatar: "",
+        birthDate: "2003-01-01",
+        bio: "Cô gái ấm áp, tinh tế và là nguồn động lực diệu kỳ trong hành trình trưởng thành của Tân.",
+        hobbies: "Khám phá ẩm thực, Chụp ảnh, Làm đẹp, Xem phim",
+        skills: "Giao tiếp, Sự thấu hiểu, Năng khiếu nghệ thuật",
+        goals: "Phát triển công việc yêu thích và tạo nên một mái ấm tràn ngập tiếng cười.",
+        changes: "Tự tin hơn, luôn yêu thương bản thân và cùng Tân vượt qua mọi thử thách."
+      }
+    };
+
+    window.switchProfileTab = function(person) {
+      currentProfileTab = person;
+      document.getElementById('btn-profile-tan')?.classList.toggle('active', person === 'tan');
+      document.getElementById('btn-profile-tran')?.classList.toggle('active', person === 'tran');
+      renderProfileUI();
+    };
+
+    function updateProfilePermissions() {
+      renderProfileUI();
+    }
+
+    function renderProfileUI() {
+      const data = defaultProfiles[currentProfileTab];
+      const isOwner = currentUser && currentUser.role === currentProfileTab;
+
+      document.getElementById('profile-display-name').textContent = data.displayName;
+      document.getElementById('profile-display-bio').textContent = data.bio;
+      document.getElementById('profile-display-birth').textContent = data.birthDate || "Chưa cập nhật";
+      document.getElementById('profile-display-skills').textContent = data.skills || "Chưa cập nhật";
+      document.getElementById('profile-display-goals').textContent = data.goals || "Chưa cập nhật";
+      document.getElementById('profile-display-changes').textContent = data.changes || "Chưa cập nhật";
+
+      // Render tags sở thích
+      const hobbiesContainer = document.getElementById('profile-display-hobbies');
+      if (hobbiesContainer) {
+        hobbiesContainer.innerHTML = '';
+        const tags = (data.hobbies || "").split(',').map(s => s.trim()).filter(Boolean);
+        if (tags.length) {
+          tags.forEach(t => {
+            const span = document.createElement('span');
+            span.className = 'profile-tag-item';
+            span.textContent = t;
+            hobbiesContainer.appendChild(span);
+          });
+        } else {
+          hobbiesContainer.innerHTML = '<span class="profile-tag-item">Chưa có sở thích</span>';
+        }
+      }
+
+      // Xử lý nút sửa và thông báo phân quyền (Chỉ cho phép sửa hồ sơ của chính mình)
+      const editBtn = document.getElementById('btn-edit-profile');
+      const permNotice = document.getElementById('profile-perm-notice');
+
+      if (isOwner) {
+        if (editBtn) editBtn.style.display = 'inline-flex';
+        if (permNotice) permNotice.style.display = 'none';
+      } else {
+        if (editBtn) editBtn.style.display = 'none';
+        if (permNotice) {
+          permNotice.style.display = 'inline-flex';
+          permNotice.textContent = `🔒 Đang xem hồ sơ của ${data.displayName} (Chỉ xem)`;
+        }
+      }
+    }
+
+    window.openEditProfileModal = function() {
+      if (!currentUser || currentUser.role !== currentProfileTab) {
+        showToast("Bạn chỉ có quyền chỉnh sửa hồ sơ cá nhân của chính mình!", "warning");
+        return;
+      }
+      const data = defaultProfiles[currentProfileTab];
+      document.getElementById('prof-form-name').value = data.displayName;
+      document.getElementById('prof-form-avatar').value = data.avatar || '';
+      document.getElementById('prof-form-birth').value = data.birthDate || '';
+      document.getElementById('prof-form-bio').value = data.bio || '';
+      document.getElementById('prof-form-hobbies').value = data.hobbies || '';
+      document.getElementById('prof-form-skills').value = data.skills || '';
+      document.getElementById('prof-form-goals').value = data.goals || '';
+
+      openModal('modal-edit-profile');
+    };
+
+    window.saveProfileData = async function() {
+      if (!currentUser || currentUser.role !== currentProfileTab) return;
+
+      const updated = {
+        displayName: document.getElementById('prof-form-name').value.trim(),
+        avatar: document.getElementById('prof-form-avatar').value.trim(),
+        birthDate: document.getElementById('prof-form-birth').value,
+        bio: document.getElementById('prof-form-bio').value.trim(),
+        hobbies: document.getElementById('prof-form-hobbies').value.trim(),
+        skills: document.getElementById('prof-form-skills').value.trim(),
+        goals: document.getElementById('prof-form-goals').value.trim()
+      };
+
+      defaultProfiles[currentProfileTab] = { ...defaultProfiles[currentProfileTab], ...updated };
+
+      if (!isDemoMode && db && currentUser) {
+        try {
+          await setDoc(doc(db, "profiles", currentUser.uid), {
+            ...updated,
+            ownerUid: currentUser.uid,
+            updatedAt: serverTimestamp()
+          }, { merge: true });
+        } catch (e) {
+          showToast("Lỗi lưu hồ sơ lên Firestore: " + e.message, "error");
+        }
+      } else {
+        localStorage.setItem(`txt_profile_${currentProfileTab}`, JSON.stringify(defaultProfiles[currentProfileTab]));
+      }
+
+      closeModal('modal-edit-profile');
+      renderProfileUI();
+      showToast("Đã lưu hồ sơ thành công!", "success");
+    };
+
+    async function loadProfileData() {
+      if (!db || isDemoMode) return;
+      try {
+        if (TAN_UID) {
+          const tanDoc = await getDoc(doc(db, "profiles", TAN_UID));
+          if (tanDoc.exists()) defaultProfiles.tan = { ...defaultProfiles.tan, ...tanDoc.data() };
+        }
+        if (TRAN_UID) {
+          const tranDoc = await getDoc(doc(db, "profiles", TRAN_UID));
+          if (tranDoc.exists()) defaultProfiles.tran = { ...defaultProfiles.tran, ...tranDoc.data() };
+        }
+        renderProfileUI();
+      } catch (e) {
+        console.warn("Không tải được profile từ cloud:", e);
+      }
+    }
+
+    // =========================================================================
+    // DÒNG THỜI GIAN (TIMELINE CRUD & SOFT DELETE)
+    // =========================================================================
+    window.openCreateTimelineModal = function() {
+      if (!currentUser) {
+        showToast("Vui lòng đăng nhập để thêm cột mốc mới!", "warning");
+        openLoginModal();
+        return;
+      }
+      document.getElementById('timeline-modal-title').textContent = "Thêm Cột Mốc Mới";
+      document.getElementById('timeline-form-id').value = '';
+      document.getElementById('timeline-form-title').value = '';
+      document.getElementById('timeline-form-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('timeline-form-story').value = '';
+      document.getElementById('timeline-form-location').value = '';
+      document.getElementById('timeline-form-media').value = '';
+      openModal('modal-timeline');
+    };
+
+    window.saveTimeline = async function() {
+      const id = document.getElementById('timeline-form-id').value;
+      const title = document.getElementById('timeline-form-title').value.trim();
+      const date = document.getElementById('timeline-form-date').value;
+      const story = document.getElementById('timeline-form-story').value.trim();
+      const people = document.getElementById('timeline-form-people').value;
+      const location = document.getElementById('timeline-form-location').value.trim();
+      const scope = document.getElementById('timeline-form-scope').value;
+      const media = document.getElementById('timeline-form-media').value.trim();
+
+      if (!title || !date || !story) {
+        showToast("Vui lòng nhập đầy đủ Tiêu đề, Ngày và Câu chuyện!", "warning");
+        return;
+      }
+
+      const itemData = {
+        title,
+        date,
+        story,
+        people,
+        location,
+        scope,
+        media,
+        isDeleted: false,
+        ownerUid: scope === 'personal' ? currentUser.uid : 'shared',
+        createdBy: currentUser.uid,
+        updatedAt: new Date().toISOString()
+      };
+
+      if (!isDemoMode && db) {
+        try {
+          if (id) {
+            await updateDoc(doc(db, "timeline", id), { ...itemData, updatedAt: serverTimestamp() });
+          } else {
+            await addDoc(collection(db, "timeline"), { ...itemData, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+          }
+        } catch (e) {
+          showToast("Lỗi lưu cột mốc: " + e.message, "error");
+          return;
+        }
+      } else {
+        // Chế độ Demo
+        if (id) {
+          const idx = timelineData.findIndex(t => t.id === id);
+          if (idx !== -1) timelineData[idx] = { ...timelineData[idx], ...itemData };
+        } else {
+          timelineData.push({ id: 'tl-' + Date.now(), ...itemData, createdAt: new Date().toISOString() });
+        }
+        saveLocalData();
+        renderTimeline();
+      }
+
+      closeModal('modal-timeline');
+      showToast(id ? "Đã cập nhật cột mốc!" : "Đã thêm cột mốc mới thành công!", "success");
+    };
+
+    function renderTimeline() {
+      const container = document.getElementById('timeline-list-container');
+      if (!container) return;
+
+      const activeList = timelineData.filter(t => !t.isDeleted);
+      activeList.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      if (activeList.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">⏳</div>
+            <h4 class="empty-state-title">Chưa có cột mốc nào</h4>
+            <p class="empty-state-desc">Hãy thêm những cột mốc đầu tiên để cùng nhìn lại chặng đường đã qua.</p>
+            <button class="btn btn-primary" onclick="openCreateTimelineModal()">+ Thêm cột mốc</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = activeList.map(item => {
+        const canEdit = currentUser && (item.scope === 'shared' || item.ownerUid === currentUser.uid);
+        return `
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content-card">
+              <span class="timeline-date">📅 ${item.date} ${item.location ? `• 📍 ${item.location}` : ''}</span>
+              <h3 class="timeline-title">${item.title}</h3>
+              <p class="timeline-story">${item.story}</p>
+              ${item.media ? `<img src="${item.media}" class="timeline-media" alt="Milestone media" onerror="this.style.display='none'">` : ''}
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+                <span style="font-size:0.75rem; color:var(--text-sub);">
+                  ${item.scope === 'personal' ? '🔒 Cá nhân' : '💫 Cột mốc chung'}
+                </span>
+                ${canEdit ? `
+                  <div style="display:flex; gap:6px;">
+                    <button class="btn btn-secondary btn-sm" onclick="editTimeline('${item.id}')">Sửa</button>
+                    <button class="btn btn-danger btn-sm" onclick="softDeleteTimeline('${item.id}')">Xóa</button>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.editTimeline = function(id) {
+      const item = timelineData.find(t => t.id === id);
+      if (!item) return;
+      document.getElementById('timeline-modal-title').textContent = "Chỉnh Sửa Cột Mốc";
+      document.getElementById('timeline-form-id').value = item.id;
+      document.getElementById('timeline-form-title').value = item.title;
+      document.getElementById('timeline-form-date').value = item.date;
+      document.getElementById('timeline-form-story').value = item.story;
+      document.getElementById('timeline-form-people').value = item.people || 'both';
+      document.getElementById('timeline-form-location').value = item.location || '';
+      document.getElementById('timeline-form-scope').value = item.scope || 'shared';
+      document.getElementById('timeline-form-media').value = item.media || '';
+      openModal('modal-timeline');
+    };
+
+    window.softDeleteTimeline = async function(id) {
+      if (!confirm("Chuyển cột mốc này vào Thùng rác?")) return;
+      if (!isDemoMode && db) {
+        try {
+          await updateDoc(doc(db, "timeline", id), {
+            isDeleted: true,
+            deletedAt: serverTimestamp(),
+            deletedBy: currentUser.uid
+          });
+        } catch (e) {
+          showToast("Lỗi xóa: " + e.message, "error");
+        }
+      } else {
+        const item = timelineData.find(t => t.id === id);
+        if (item) {
+          item.isDeleted = true;
+          item.deletedAt = new Date().toISOString();
+          item.deletedBy = currentUser ? currentUser.uid : 'tan';
+          saveLocalData();
+          renderTimeline();
+          renderTrash();
+        }
+      }
+      showToast("Đã chuyển cột mốc vào Thùng rác.", "info");
+    };
+
+    // =========================================================================
+    // KỶ NIỆM & NHẬT KÝ (MEMORIES CRUD)
+    // =========================================================================
+    window.openCreateMemoryModal = function() {
+      if (!currentUser) {
+        showToast("Vui lòng đăng nhập để lưu giữ kỷ niệm!", "warning");
+        openLoginModal();
+        return;
+      }
+      document.getElementById('memory-modal-title').textContent = "Viết Kỷ Niệm Mới";
+      document.getElementById('memory-form-id').value = '';
+      document.getElementById('memory-form-title').value = '';
+      document.getElementById('memory-form-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('memory-form-content').value = '';
+      document.getElementById('memory-form-tags').value = '';
+      document.getElementById('memory-form-media').value = '';
+      openModal('modal-memory');
+    };
+
+    window.saveMemory = async function() {
+      const id = document.getElementById('memory-form-id').value;
+      const title = document.getElementById('memory-form-title').value.trim();
+      const date = document.getElementById('memory-form-date').value;
+      const category = document.getElementById('memory-form-category').value;
+      const scope = document.getElementById('memory-form-scope').value;
+      const tags = document.getElementById('memory-form-tags').value.split(',').map(s => s.trim()).filter(Boolean);
+      const content = document.getElementById('memory-form-content').value.trim();
+      const media = document.getElementById('memory-form-media').value.trim();
+
+      if (!title || !date || !content) {
+        showToast("Vui lòng nhập đầy đủ Tiêu đề, Ngày và Nội dung!", "warning");
+        return;
+      }
+
+      const itemData = {
+        title,
+        date,
+        category,
+        scope,
+        tags,
+        content,
+        media,
+        authorName: currentUser.displayName,
+        isDeleted: false,
+        ownerUid: scope === 'personal' ? currentUser.uid : 'shared',
+        createdBy: currentUser.uid,
+        updatedAt: new Date().toISOString()
+      };
+
+      if (!isDemoMode && db) {
+        try {
+          if (id) {
+            await updateDoc(doc(db, "memories", id), { ...itemData, updatedAt: serverTimestamp() });
+          } else {
+            await addDoc(collection(db, "memories"), { ...itemData, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+          }
+        } catch (e) {
+          showToast("Lỗi lưu kỷ niệm: " + e.message, "error");
+          return;
+        }
+      } else {
+        if (id) {
+          const idx = memoriesData.findIndex(m => m.id === id);
+          if (idx !== -1) memoriesData[idx] = { ...memoriesData[idx], ...itemData };
+        } else {
+          memoriesData.unshift({ id: 'mem-' + Date.now(), ...itemData, createdAt: new Date().toISOString() });
+        }
+        saveLocalData();
+        renderMemories();
+        updateDashboardStats();
+      }
+
+      closeModal('modal-memory');
+      showToast(id ? "Đã cập nhật kỷ niệm!" : "Đã lưu giữ kỷ niệm thành công!", "success");
+    };
+
+    window.handleMemoryFilter = function() {
+      renderMemories();
+    };
+
+    function renderMemories() {
+      const container = document.getElementById('memories-grid-container');
+      if (!container) return;
+
+      const search = (document.getElementById('memory-search-input')?.value || '').toLowerCase();
+      const cat = document.getElementById('memory-filter-category')?.value || 'all';
+      const sc = document.getElementById('memory-filter-scope')?.value || 'all';
+
+      const filtered = memoriesData.filter(m => {
+        if (m.isDeleted) return false;
+        if (cat !== 'all' && m.category !== cat) return false;
+        if (sc !== 'all' && m.scope !== sc) return false;
+        if (search) {
+          const matchTitle = (m.title || '').toLowerCase().includes(search);
+          const matchContent = (m.content || '').toLowerCase().includes(search);
+          if (!matchTitle && !matchContent) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <div class="empty-state-icon">📖</div>
+            <h4 class="empty-state-title">Chưa tìm thấy kỷ niệm nào</h4>
+            <p class="empty-state-desc">Hãy thay đổi bộ lọc tìm kiếm hoặc viết nên một kỷ niệm mới.</p>
+            <button class="btn btn-primary" onclick="openCreateMemoryModal()">+ Viết kỷ niệm</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(m => {
+        const canEdit = currentUser && (m.scope === 'shared' || m.ownerUid === currentUser.uid);
+        return `
+          <div class="glass-card memory-card" onclick="viewMemoryDetail('${m.id}')">
+            <div>
+              <div class="memory-card-header">
+                <span class="memory-badge">${m.category}</span>
+                <span style="font-size:0.75rem; color:var(--text-sub);">${m.date}</span>
+              </div>
+              <h3 class="memory-title">${m.title}</h3>
+              <p class="memory-snippet">${m.content}</p>
+            </div>
+            <div class="memory-footer">
+              <span>Bởi: <strong>${m.authorName || 'TxT'}</strong></span>
+              <span>${m.scope === 'personal' ? '🔒 Cá nhân' : '💫 Chung'}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      renderRecentMemoriesOnDashboard();
+    }
+
+    window.viewMemoryDetail = function(id) {
+      const m = memoriesData.find(item => item.id === id);
+      if (!m) return;
+
+      document.getElementById('view-memory-badge').textContent = m.category;
+      document.getElementById('view-memory-title').textContent = m.title;
+      document.getElementById('view-memory-meta').textContent = `📅 ${m.date} • Tác giả: ${m.authorName || 'TxT'} • ${m.scope === 'personal' ? '🔒 Riêng tư' : '💫 Kỷ niệm chung'}`;
+      document.getElementById('view-memory-content').textContent = m.content;
+
+      const mediaBox = document.getElementById('view-memory-media-container');
+      if (m.media) {
+        mediaBox.innerHTML = `<img src="${m.media}" style="max-width:100%; border-radius:var(--radius-md); max-height:340px; object-fit:cover;" alt="Memory Media">`;
+      } else {
+        mediaBox.innerHTML = '';
+      }
+
+      const footer = document.getElementById('view-memory-footer-actions');
+      const canEdit = currentUser && (m.scope === 'shared' || m.ownerUid === currentUser.uid);
+
+      if (canEdit) {
+        footer.innerHTML = `
+          <button class="btn btn-secondary btn-sm" onclick="editMemory('${m.id}')">Chỉnh sửa</button>
+          <button class="btn btn-danger btn-sm" onclick="softDeleteMemory('${m.id}')">Chuyển vào thùng rác</button>
+        `;
+      } else {
+        footer.innerHTML = `<span class="read-only-badge">🔒 Dữ liệu riêng của đối phương (Chỉ xem)</span>`;
+      }
+
+      openModal('modal-view-memory');
+    };
+
+    window.editMemory = function(id) {
+      closeModal('modal-view-memory');
+      const m = memoriesData.find(item => item.id === id);
+      if (!m) return;
+      document.getElementById('memory-modal-title').textContent = "Chỉnh Sửa Kỷ Niệm";
+      document.getElementById('memory-form-id').value = m.id;
+      document.getElementById('memory-form-title').value = m.title;
+      document.getElementById('memory-form-date').value = m.date;
+      document.getElementById('memory-form-category').value = m.category;
+      document.getElementById('memory-form-scope').value = m.scope;
+      document.getElementById('memory-form-tags').value = (m.tags || []).join(', ');
+      document.getElementById('memory-form-content').value = m.content;
+      document.getElementById('memory-form-media').value = m.media || '';
+      openModal('modal-memory');
+    };
+
+    window.softDeleteMemory = async function(id) {
+      if (!confirm("Chuyển kỷ niệm này vào thùng rác?")) return;
+      closeModal('modal-view-memory');
+
+      if (!isDemoMode && db) {
+        try {
+          await updateDoc(doc(db, "memories", id), {
+            isDeleted: true,
+            deletedAt: serverTimestamp(),
+            deletedBy: currentUser.uid
+          });
+        } catch (e) {
+          showToast("Lỗi: " + e.message, "error");
+        }
+      } else {
+        const item = memoriesData.find(m => m.id === id);
+        if (item) {
+          item.isDeleted = true;
+          item.deletedAt = new Date().toISOString();
+          item.deletedBy = currentUser ? currentUser.uid : 'tan';
+          saveLocalData();
+          renderMemories();
+          renderTrash();
+        }
+      }
+      showToast("Đã chuyển kỷ niệm vào thùng rác.", "info");
+    };
+
+    function renderRecentMemoriesOnDashboard() {
+      const el = document.getElementById('dashboard-recent-memories-list');
+      if (!el) return;
+      const recent = memoriesData.filter(m => !m.isDeleted).slice(0, 3);
+      if (recent.length === 0) {
+        el.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:15px 0;">Chưa có kỷ niệm nào gần đây.</p>`;
+        return;
+      }
+      el.innerHTML = recent.map(m => `
+        <div style="padding:10px 0; border-bottom:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="viewMemoryDetail('${m.id}')">
+          <div>
+            <h5 style="font-size:0.92rem; font-weight:600; color:var(--text-main);">${m.title}</h5>
+            <span style="font-size:0.75rem; color:var(--text-muted);">${m.date} • ${m.category}</span>
+          </div>
+          <span style="font-size:0.85rem; color:var(--blush-pink);">➔</span>
+        </div>
+      `).join('');
+    }
+
+    // =========================================================================
+    // MỤC TIÊU & PHÁT TRIỂN (GOALS CRUD)
+    // =========================================================================
+    window.openCreateGoalModal = function() {
+      if (!currentUser) {
+        showToast("Vui lòng đăng nhập để tạo mục tiêu!", "warning");
+        openLoginModal();
+        return;
+      }
+      document.getElementById('goal-modal-title').textContent = "Thêm Mục Tiêu Mới";
+      document.getElementById('goal-form-id').value = '';
+      document.getElementById('goal-form-title').value = '';
+      document.getElementById('goal-form-group').value = 'shared';
+      document.getElementById('goal-form-timeframe').value = 'short_term';
+      document.getElementById('goal-form-priority').value = 'high';
+      document.getElementById('goal-form-status').value = 'in_progress';
+      document.getElementById('goal-form-progress').value = 0;
+      document.getElementById('goal-progress-num').textContent = 0;
+      document.getElementById('goal-form-subtasks').value = '';
+      openModal('modal-goal');
+    };
+
+    window.saveGoal = async function() {
+      const id = document.getElementById('goal-form-id').value;
+      const title = document.getElementById('goal-form-title').value.trim();
+      const targetGroup = document.getElementById('goal-form-group').value;
+      const timeframe = document.getElementById('goal-form-timeframe').value;
+      const priority = document.getElementById('goal-form-priority').value;
+      const status = document.getElementById('goal-form-status').value;
+      const progress = parseInt(document.getElementById('goal-form-progress').value) || 0;
+      const rawSubtasks = document.getElementById('goal-form-subtasks').value.split('\n').map(s => s.trim()).filter(Boolean);
+
+      if (!title) {
+        showToast("Vui lòng nhập tên mục tiêu!", "warning");
+        return;
+      }
+
+      const subtasks = rawSubtasks.map((txt, i) => ({
+        id: `st-${i}-${Date.now()}`,
+        text: txt,
+        completed: false
+      }));
+
+      const isPersonal = targetGroup !== 'shared';
+      const itemData = {
+        title,
+        targetGroup,
+        timeframe,
+        priority,
+        status,
+        progress,
+        subtasks,
+        scope: isPersonal ? 'personal' : 'shared',
+        ownerUid: isPersonal ? currentUser.uid : 'shared',
+        isDeleted: false,
+        createdBy: currentUser.uid,
+        updatedAt: new Date().toISOString()
+      };
+
+      if (!isDemoMode && db) {
+        try {
+          if (id) {
+            await updateDoc(doc(db, "goals", id), { ...itemData, updatedAt: serverTimestamp() });
+          } else {
+            await addDoc(collection(db, "goals"), { ...itemData, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+          }
+        } catch (e) {
+          showToast("Lỗi lưu mục tiêu: " + e.message, "error");
+          return;
+        }
+      } else {
+        if (id) {
+          const idx = goalsData.findIndex(g => g.id === id);
+          if (idx !== -1) goalsData[idx] = { ...goalsData[idx], ...itemData };
+        } else {
+          goalsData.unshift({ id: 'goal-' + Date.now(), ...itemData, createdAt: new Date().toISOString() });
+        }
+        saveLocalData();
+        renderGoals();
+        updateDashboardStats();
+      }
+
+      closeModal('modal-goal');
+      showToast(id ? "Đã cập nhật mục tiêu!" : "Đã tạo mục tiêu thành công!", "success");
+    };
+
+    window.filterGoals = function(group, btnEl) {
+      currentGoalFilter = group;
+      document.querySelectorAll('#goal-tab-filters .btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      renderGoals();
+    };
+
+    function renderGoals() {
+      const container = document.getElementById('goals-grid-container');
+      if (!container) return;
+
+      const filtered = goalsData.filter(g => {
+        if (g.isDeleted) return false;
+        if (currentGoalFilter === 'all') return true;
+        return g.targetGroup === currentGoalFilter;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <div class="empty-state-icon">🎯</div>
+            <h4 class="empty-state-title">Chưa có mục tiêu nào</h4>
+            <p class="empty-state-desc">Hãy cùng nhau đặt ra những mục tiêu ý nghĩa để cùng phát triển.</p>
+            <button class="btn btn-primary" onclick="openCreateGoalModal()">+ Thêm mục tiêu</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(g => {
+        const canEdit = currentUser && (g.scope === 'shared' || g.ownerUid === currentUser.uid);
+        const priLabels = { high: '🔥 Ưu tiên cao', medium: '⚡ Trung bình', low: '🌱 Dài hạn' };
+        const statusLabels = {
+          in_progress: 'Đang thực hiện',
+          completed: 'Đã hoàn thành',
+          paused: 'Tạm hoãn',
+          not_started: 'Chưa bắt đầu'
+        };
+
+        return `
+          <div class="glass-card goal-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-size:0.75rem; color:var(--champagne-gold);">${priLabels[g.priority] || ''}</span>
+              <span class="memory-badge" style="font-size:0.72rem;">${statusLabels[g.status] || ''}</span>
+            </div>
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:6px;">${g.title}</h3>
+            
+            <div style="display:flex; justify-content:space-between; font-size:0.78rem; color:var(--text-muted); margin-top:8px;">
+              <span>Tiến độ</span>
+              <span><strong>${g.progress}%</strong></span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width: ${g.progress}%;"></div>
+            </div>
+
+            <!-- Danh sách subtasks -->
+            ${g.subtasks && g.subtasks.length ? `
+              <div class="subtasks-list">
+                ${g.subtasks.map(st => `
+                  <label class="subtask-item ${st.completed ? 'completed' : ''}">
+                    <input type="checkbox" ${st.completed ? 'checked' : ''} ${canEdit ? `onchange="toggleSubtask('${g.id}', '${st.id}')"` : 'disabled'}>
+                    <span>${st.text}</span>
+                  </label>
+                `).join('')}
+              </div>
+            ` : ''}
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; border-top:1px solid var(--border-subtle); padding-top:10px;">
+              <span style="font-size:0.75rem; color:var(--text-sub);">
+                ${g.targetGroup === 'shared' ? '💫 Chung' : (g.targetGroup === 'tan' ? '👨‍💻 Của Tân' : '🌸 Của Trân')}
+              </span>
+              ${canEdit ? `
+                <div style="display:flex; gap:6px;">
+                  <button class="btn btn-secondary btn-sm" onclick="editGoal('${g.id}')">Sửa</button>
+                  <button class="btn btn-danger btn-sm" onclick="softDeleteGoal('${g.id}')">Xóa</button>
+                </div>
+              ` : '<span class="read-only-badge">🔒 Chỉ xem</span>'}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.toggleSubtask = async function(goalId, subtaskId) {
+      const g = goalsData.find(item => item.id === goalId);
+      if (!g || !g.subtasks) return;
+      const st = g.subtasks.find(s => s.id === subtaskId);
+      if (!st) return;
+
+      st.completed = !st.completed;
+      // Tự động tính lại % tiến độ dựa trên số subtasks hoàn thành
+      const completedCount = g.subtasks.filter(s => s.completed).length;
+      g.progress = Math.round((completedCount / g.subtasks.length) * 100);
+      if (g.progress === 100) g.status = 'completed';
+
+      if (!isDemoMode && db) {
+        try {
+          await updateDoc(doc(db, "goals", goalId), {
+            subtasks: g.subtasks,
+            progress: g.progress,
+            status: g.status,
+            updatedAt: serverTimestamp()
+          });
+        } catch (e) {
+          showToast("Lỗi cập nhật: " + e.message, "error");
+        }
+      } else {
+        saveLocalData();
+        renderGoals();
+        updateDashboardStats();
+      }
+    };
+
+    window.editGoal = function(id) {
+      const g = goalsData.find(item => item.id === id);
+      if (!g) return;
+      document.getElementById('goal-modal-title').textContent = "Chỉnh Sửa Mục Tiêu";
+      document.getElementById('goal-form-id').value = g.id;
+      document.getElementById('goal-form-title').value = g.title;
+      document.getElementById('goal-form-group').value = g.targetGroup;
+      document.getElementById('goal-form-timeframe').value = g.timeframe;
+      document.getElementById('goal-form-priority').value = g.priority;
+      document.getElementById('goal-form-status').value = g.status;
+      document.getElementById('goal-form-progress').value = g.progress;
+      document.getElementById('goal-progress-num').textContent = g.progress;
+      document.getElementById('goal-form-subtasks').value = (g.subtasks || []).map(s => s.text).join('\n');
+      openModal('modal-goal');
+    };
+
+    window.softDeleteGoal = async function(id) {
+      if (!confirm("Chuyển mục tiêu này vào Thùng rác?")) return;
+      if (!isDemoMode && db) {
+        try {
+          await updateDoc(doc(db, "goals", id), {
+            isDeleted: true,
+            deletedAt: serverTimestamp(),
+            deletedBy: currentUser.uid
+          });
+        } catch (e) {
+          showToast("Lỗi xóa: " + e.message, "error");
+        }
+      } else {
+        const item = goalsData.find(g => g.id === id);
+        if (item) {
+          item.isDeleted = true;
+          item.deletedAt = new Date().toISOString();
+          item.deletedBy = currentUser ? currentUser.uid : 'tan';
+          saveLocalData();
+          renderGoals();
+          renderTrash();
+        }
+      }
+      showToast("Đã chuyển mục tiêu vào Thùng rác.", "info");
+    };
+
+    // =========================================================================
+    // ĐIỀU MUỐN TRẢI NGHIỆM (BUCKET LIST CRUD)
+    // =========================================================================
+    window.openCreateBucketModal = function() {
+      if (!currentUser) {
+        showToast("Vui lòng đăng nhập để thêm dự định!", "warning");
+        openLoginModal();
+        return;
+      }
+      document.getElementById('bucket-modal-title').textContent = "Thêm Điều Muốn Cùng Làm";
+      document.getElementById('bucket-form-id').value = '';
+      document.getElementById('bucket-form-title').value = '';
+      document.getElementById('bucket-form-notes').value = '';
+      openModal('modal-bucket');
+    };
+
+    window.saveBucketItem = async function() {
+      const id = document.getElementById('bucket-form-id').value;
+      const title = document.getElementById('bucket-form-title').value.trim();
+      const category = document.getElementById('bucket-form-category').value;
+      const scope = document.getElementById('bucket-form-scope').value;
+      const notes = document.getElementById('bucket-form-notes').value.trim();
+
+      if (!title) {
+        showToast("Vui lòng nhập tên điều muốn làm!", "warning");
+        return;
+      }
+
+      const itemData = {
+        title,
+        category,
+        scope,
+        notes,
+        status: 'planned',
+        isDeleted: false,
+        ownerUid: scope === 'personal' ? currentUser.uid : 'shared',
+        createdBy: currentUser.uid,
+        updatedAt: new Date().toISOString()
+      };
+
+      if (!isDemoMode && db) {
+        try {
+          if (id) {
+            await updateDoc(doc(db, "bucket_list", id), { ...itemData, updatedAt: serverTimestamp() });
+          } else {
+            await addDoc(collection(db, "bucket_list"), { ...itemData, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+          }
+        } catch (e) {
+          showToast("Lỗi lưu: " + e.message, "error");
+          return;
+        }
+      } else {
+        if (id) {
+          const idx = bucketData.findIndex(b => b.id === id);
+          if (idx !== -1) bucketData[idx] = { ...bucketData[idx], ...itemData };
+        } else {
+          bucketData.unshift({ id: 'buck-' + Date.now(), ...itemData, createdAt: new Date().toISOString() });
+        }
+        saveLocalData();
+        renderBucketList();
+        updateDashboardStats();
+      }
+
+      closeModal('modal-bucket');
+      showToast("Đã lưu điều ước thành công! ✨", "success");
+    };
+
+    window.renderBucketList = function() {
+      const container = document.getElementById('bucket-list-container');
+      if (!container) return;
+
+      const statusFilter = document.getElementById('bucket-filter-status')?.value || 'all';
+      const filtered = bucketData.filter(b => {
+        if (b.isDeleted) return false;
+        if (statusFilter !== 'all' && b.status !== statusFilter) return false;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <div class="empty-state-icon">🌟</div>
+            <h4 class="empty-state-title">Chưa có điều ước nào</h4>
+            <p class="empty-state-desc">Hãy cùng nhau lên danh sách những trải nghiệm muốn thực hiện trong đời.</p>
+            <button class="btn btn-primary" onclick="openCreateBucketModal()">+ Thêm điều muốn làm</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(b => {
+        const isDone = b.status === 'completed';
+        const canEdit = currentUser && (b.scope === 'shared' || b.ownerUid === currentUser.uid);
+
+        return `
+          <div class="glass-card bucket-card bucket-item ${isDone ? 'completed' : ''}">
+            <button class="bucket-check-btn ${isDone ? 'checked' : ''}" ${canEdit ? `onclick="toggleBucketStatus('${b.id}')"` : 'disabled'} title="${isDone ? 'Đánh dấu chưa làm' : 'Đánh dấu đã hoàn thành'}">
+              ✓
+            </button>
+            <div class="bucket-info">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <span style="font-size:0.72rem; color:var(--champagne-gold);">${b.category}</span>
+                <span style="font-size:0.72rem; color:var(--text-sub);">${b.scope === 'personal' ? '🔒 Riêng' : '💫 Chung'}</span>
+              </div>
+              <h4 class="bucket-title">${b.title}</h4>
+              ${b.notes ? `<p style="font-size:0.83rem; color:var(--text-muted);">${b.notes}</p>` : ''}
+              ${canEdit ? `
+                <div style="display:flex; gap:6px; margin-top:8px;">
+                  <button class="btn btn-danger btn-sm" style="padding:2px 8px; font-size:0.7rem;" onclick="softDeleteBucket('${b.id}')">Xóa</button>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+
+    window.toggleBucketStatus = async function(id) {
+      const b = bucketData.find(item => item.id === id);
+      if (!b) return;
+      b.status = b.status === 'completed' ? 'planned' : 'completed';
+
+      if (!isDemoMode && db) {
+        try {
+          await updateDoc(doc(db, "bucket_list", id), {
+            status: b.status,
+            updatedAt: serverTimestamp()
+          });
+        } catch (e) {
+          showToast("Lỗi: " + e.message, "error");
+        }
+      } else {
+        saveLocalData();
+        renderBucketList();
+        updateDashboardStats();
+      }
+      showToast(b.status === 'completed' ? "Chúc mừng hai bạn đã hoàn thành thêm một trải nghiệm! 🎉" : "Đã chuyển về trạng thái kế hoạch.", "success");
+    };
+
+    window.softDeleteBucket = async function(id) {
+      if (!confirm("Chuyển trải nghiệm này vào Thùng rác?")) return;
+      if (!isDemoMode && db) {
+        try {
+          await updateDoc(doc(db, "bucket_list", id), {
+            isDeleted: true,
+            deletedAt: serverTimestamp(),
+            deletedBy: currentUser.uid
+          });
+        } catch (e) {
+          showToast("Lỗi xóa: " + e.message, "error");
+        }
+      } else {
+        const item = bucketData.find(b => b.id === id);
+        if (item) {
+          item.isDeleted = true;
+          item.deletedAt = new Date().toISOString();
+          item.deletedBy = currentUser ? currentUser.uid : 'tan';
+          saveLocalData();
+          renderBucketList();
+          renderTrash();
+        }
+      }
+      showToast("Đã chuyển vào Thùng rác.", "info");
+    };
+
+    // =========================================================================
+    // THƯ VIỆN PHƯƠNG TIỆN (FIREBASE STORAGE UPLOAD & MEDIA VIEWER)
+    // =========================================================================
+    window.openUploadMediaModal = function() {
+      if (!currentUser) {
+        showToast("Vui lòng đăng nhập để tải lên phương tiện!", "warning");
+        openLoginModal();
+        return;
+      }
+      document.getElementById('media-file-input').value = '';
+      document.getElementById('media-caption-input').value = '';
+      document.getElementById('upload-progress-wrapper').style.display = 'none';
+      openModal('modal-upload-media');
+    };
+
+    window.handleMediaUpload = async function() {
+      const fileInput = document.getElementById('media-file-input');
+      const caption = document.getElementById('media-caption-input').value.trim();
+      const scope = document.getElementById('media-scope-input').value;
+      const album = document.getElementById('media-album-input').value.trim() || 'Kỷ niệm chung';
+
+      if (!fileInput.files.length) {
+        showToast("Vui lòng chọn một file ảnh, video hoặc âm thanh!", "warning");
+        return;
+      }
+      const file = fileInput.files[0];
+      const submitBtn = document.getElementById('btn-submit-upload');
+      const progressWrapper = document.getElementById('upload-progress-wrapper');
+      const progressBar = document.getElementById('upload-progress-bar');
+      const progressText = document.getElementById('upload-status-text');
+
+      submitBtn.disabled = true;
+      progressWrapper.style.display = 'block';
+
+      if (!isDemoMode && storage && db) {
+        try {
+          // Lưu vào đường dẫn theo đúng Storage Security Rules:
+          // uploads/{userId}/* hoặc uploads/shared/*
+          const folder = scope === 'personal' ? currentUser.uid : 'shared';
+          const fileExt = file.name.split('.').pop();
+          const cleanName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+          const path = `uploads/${folder}/${cleanName}`;
+          const fileRef = storageRef(storage, path);
+
+          const uploadTask = uploadBytesResumable(fileRef, file);
+
+          uploadTask.on('state_changed', 
+            (snapshot) => {
+              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              progressBar.style.width = `${progress}%`;
+              progressText.textContent = `Đang tải lên: ${Math.round(progress)}%`;
+            },
+            (error) => {
+              console.error("Lỗi upload:", error);
+              showToast("Lỗi tải lên: " + error.message, "error");
+              submitBtn.disabled = false;
+            },
+            async () => {
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              // Lưu metadata vào Firestore
+              await addDoc(collection(db, "media_library"), {
+                fileName: file.name,
+                fileUrl: downloadURL,
+                storagePath: path,
+                fileType: file.type.startsWith('image/') ? 'image' : (file.type.startsWith('video/') ? 'video' : 'audio'),
+                fileSize: file.size,
+                caption: caption || file.name,
+                scope,
+                album,
+                ownerUid: scope === 'personal' ? currentUser.uid : 'shared',
+                createdBy: currentUser.uid,
+                createdAt: serverTimestamp(),
+                isDeleted: false
+              });
+
+              closeModal('modal-upload-media');
+              submitBtn.disabled = false;
+              showToast("Đã tải lên Firebase Storage thành công!", "success");
+            }
+          );
+        } catch (e) {
+          showToast("Lỗi upload: " + e.message, "error");
+          submitBtn.disabled = false;
+        }
+      } else {
+        // Chế độ Demo: Chuyển ảnh thành base64 preview cục bộ
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          mediaData.unshift({
+            id: 'media-' + Date.now(),
+            fileName: file.name,
+            fileUrl: e.target.result,
+            fileType: file.type.startsWith('image/') ? 'image' : (file.type.startsWith('video/') ? 'video' : 'audio'),
+            caption: caption || file.name,
+            album,
+            scope,
+            isDeleted: false,
+            ownerUid: scope === 'personal' ? (currentUser ? currentUser.uid : 'tan') : 'shared',
+            createdAt: new Date().toISOString()
+          });
+          saveLocalData();
+          renderMedia();
+          closeModal('modal-upload-media');
+          submitBtn.disabled = false;
+          showToast("Đã lưu media thành công (Chế độ Demo)!", "success");
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
+    function renderMedia() {
+      const container = document.getElementById('media-gallery-container');
+      if (!container) return;
+
+      const activeMedia = mediaData.filter(m => !m.isDeleted);
+      if (activeMedia.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <div class="empty-state-icon">🖼️</div>
+            <h4 class="empty-state-title">Thư viện chưa có hình ảnh nào</h4>
+            <p class="empty-state-desc">Tải lên những bức ảnh, đoạn video và ghi âm để làm phong phú thêm không gian TxT.</p>
+            <button class="btn btn-primary" onclick="openUploadMediaModal()">☁️ Tải lên phương tiện</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = activeMedia.map(m => {
+        const canDelete = currentUser && (m.scope === 'shared' || m.ownerUid === currentUser.uid);
+        return `
+          <div class="media-card-item" onclick="viewMediaDetail('${m.id}')">
+            ${m.fileType === 'video' ? `
+              <video src="${m.fileUrl}" class="media-card-thumb"></video>
+            ` : (m.fileType === 'audio' ? `
+              <div style="display:flex; align-items:center; justify-content:center; height:100%; background:var(--bg-card); font-size:2rem;">🎵</div>
+            ` : `
+              <img src="${m.fileUrl}" class="media-card-thumb" alt="${m.caption}" loading="lazy">
+            `)}
+            <div class="media-card-overlay">
+              <span class="media-card-caption">${m.caption || m.fileName}</span>
+              <span style="font-size:0.7rem; color:var(--lavender-glow);">${m.album || 'Kỷ niệm'}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.viewMediaDetail = function(id) {
+      const m = mediaData.find(item => item.id === id);
+      if (!m) return;
+      const canDelete = currentUser && (m.scope === 'shared' || m.ownerUid === currentUser.uid);
+
+      if (confirm(`Bạn đang xem: ${m.caption}\n${canDelete ? 'Bạn có muốn chuyển file này vào thùng rác không?' : ''}`)) {
+        if (canDelete) softDeleteMedia(id);
+      }
+    };
+
+    window.softDeleteMedia = async function(id) {
+      if (!confirm("Chuyển file này vào Thùng rác?")) return;
+      if (!isDemoMode && db) {
+        try {
+          await updateDoc(doc(db, "media_library", id), {
+            isDeleted: true,
+            deletedAt: serverTimestamp(),
+            deletedBy: currentUser.uid
+          });
+        } catch (e) {
+          showToast("Lỗi xóa: " + e.message, "error");
+        }
+      } else {
+        const item = mediaData.find(m => m.id === id);
+        if (item) {
+          item.isDeleted = true;
+          item.deletedAt = new Date().toISOString();
+          saveLocalData();
+          renderMedia();
+          renderTrash();
+        }
+      }
+      showToast("Đã chuyển file vào Thùng rác.", "info");
+    };
+
+    // =========================================================================
+    // THÙNG RÁC DỮ LIỆU & KHÔI PHỤC (TRASH BIN CRUD)
+    // =========================================================================
+    function renderTrash() {
+      const tbody = document.getElementById('trash-table-body');
+      if (!tbody) return;
+
+      const deletedItems = [];
+
+      memoriesData.filter(m => m.isDeleted).forEach(m => deletedItems.push({ ...m, type: 'Kỷ niệm', typeKey: 'memory' }));
+      timelineData.filter(t => t.isDeleted).forEach(t => deletedItems.push({ ...t, type: 'Cột mốc', typeKey: 'timeline' }));
+      goalsData.filter(g => g.isDeleted).forEach(g => deletedItems.push({ ...g, type: 'Mục tiêu', typeKey: 'goal' }));
+      bucketData.filter(b => b.isDeleted).forEach(b => deletedItems.push({ ...b, type: 'Điều muốn làm', typeKey: 'bucket' }));
+      mediaData.filter(m => m.isDeleted).forEach(m => deletedItems.push({ ...m, title: m.caption || m.fileName, type: 'Media', typeKey: 'media' }));
+
+      if (deletedItems.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);">
+              Thùng rác hiện đang trống.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = deletedItems.map(item => {
+        const canManage = currentUser && (item.scope === 'shared' || item.ownerUid === currentUser.uid);
+        return `
+          <tr>
+            <td><span class="memory-badge">${item.type}</span></td>
+            <td><strong>${item.title || 'Không tên'}</strong></td>
+            <td>${item.scope === 'personal' ? '🔒 Cá nhân' : '💫 Chung'}</td>
+            <td style="font-size:0.78rem; color:var(--text-muted);">${item.deletedAt ? item.deletedAt.substring(0, 10) : 'Gần đây'}</td>
+            <td>
+              ${canManage ? `
+                <div style="display:flex; gap:6px;">
+                  <button class="btn btn-secondary btn-sm" onclick="restoreTrashItem('${item.typeKey}', '${item.id}')">Khôi phục</button>
+                  <button class="btn btn-danger btn-sm" onclick="permanentlyDeleteItem('${item.typeKey}', '${item.id}')">Xóa vĩnh viễn</button>
+                </div>
+              ` : '<span class="read-only-badge">🔒 Quyền của đối phương</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.restoreTrashItem = async function(typeKey, id) {
+      if (!confirm("Bạn muốn khôi phục bản ghi này?")) return;
+
+      if (!isDemoMode && db) {
+        try {
+          const colMap = { memory: 'memories', timeline: 'timeline', goal: 'goals', bucket: 'bucket_list', media: 'media_library' };
+          await updateDoc(doc(db, colMap[typeKey], id), {
+            isDeleted: false,
+            deletedAt: null
+          });
+          showToast("Đã khôi phục thành công!", "success");
+        } catch (e) {
+          showToast("Lỗi khôi phục: " + e.message, "error");
+        }
+      } else {
+        const lists = { memory: memoriesData, timeline: timelineData, goal: goalsData, bucket: bucketData, media: mediaData };
+        const list = lists[typeKey];
+        if (list) {
+          const item = list.find(x => x.id === id);
+          if (item) {
+            item.isDeleted = false;
+            item.deletedAt = null;
+            saveLocalData();
+            renderTrash();
+            renderTimeline();
+            renderMemories();
+            renderGoals();
+            renderBucketList();
+            renderMedia();
+            showToast("Đã khôi phục thành công!", "success");
+          }
+        }
+      }
+    };
+
+    window.permanentlyDeleteItem = async function(typeKey, id) {
+      if (!confirm("⚠️ CẢNH BÁO: Hành động này sẽ xóa vĩnh viễn dữ liệu và không thể lấy lại. Bạn có chắc chắn không?")) return;
+
+      if (!isDemoMode && db) {
+        try {
+          const colMap = { memory: 'memories', timeline: 'timeline', goal: 'goals', bucket: 'bucket_list', media: 'media_library' };
+          await deleteDoc(doc(db, colMap[typeKey], id));
+          showToast("Đã xóa vĩnh viễn bản ghi.", "info");
+        } catch (e) {
+          showToast("Lỗi xóa: " + e.message, "error");
+        }
+      } else {
+        const lists = { memory: memoriesData, timeline: timelineData, goal: goalsData, bucket: bucketData, media: mediaData };
+        const list = lists[typeKey];
+        if (list) {
+          const idx = list.findIndex(x => x.id === id);
+          if (idx !== -1) {
+            list.splice(idx, 1);
+            saveLocalData();
+            renderTrash();
+            showToast("Đã xóa vĩnh viễn bản ghi khỏi thiết bị.", "info");
+          }
+        }
+      }
+    };
+
+    // =========================================================================
+    // SAO LƯU, XUẤT VÀ NHẬP DỮ LIỆU (BACKUP, EXPORT & IMPORT)
+    // =========================================================================
+    window.exportDataToJSON = function() {
+      const backupPackage = {
+        appName: "TxT — Hành Trình Trưởng Thành",
+        version: "1.0.0",
+        exportedAt: new Date().toISOString(),
+        exportedBy: currentUser ? currentUser.displayName : "Guest",
+        data: {
+          memories: memoriesData,
+          timeline: timelineData,
+          goals: goalsData,
+          bucketList: bucketData,
+          mediaMetadata: mediaData
+        }
+      };
+
+      const jsonStr = JSON.stringify(backupPackage, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `TxT_Backup_${new Date().toISOString().substring(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("Đã tạo và tải xuống bản sao lưu JSON an toàn!", "success");
+    };
+
+    window.exportDataToCSV = function() {
+      // Xuất bảng Kỷ niệm thành file CSV
+      let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+      csvContent += "ID,Tiêu đề,Ngày,Danh mục,Tác giả,Phạm vi,Nội dung\n";
+
+      memoriesData.filter(m => !m.isDeleted).forEach(m => {
+        const row = [
+          `"${m.id}"`,
+          `"${(m.title || '').replace(/"/g, '""')}"`,
+          `"${m.date || ''}"`,
+          `"${m.category || ''}"`,
+          `"${m.authorName || ''}"`,
+          `"${m.scope || ''}"`,
+          `"${(m.content || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`
+        ];
+        csvContent += row.join(",") + "\n";
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `TxT_KyNiem_${new Date().toISOString().substring(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      showToast("Đã tải xuống file CSV kỷ niệm đọc trên Excel!", "success");
+    };
+
+    let pendingImportData = null;
+
+    window.handleFileSelectForImport = function(event) {
+      const file = event.target.files[0];
+      const previewEl = document.getElementById('import-preview-box');
+      const importBtn = document.getElementById('btn-start-import');
+
+      if (!file) {
+        importBtn.disabled = true;
+        previewEl.innerHTML = '';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (!parsed.data || (!parsed.data.memories && !parsed.data.timeline)) {
+            throw new Error("Cấu trúc file sao lưu không hợp lệ.");
+          }
+          pendingImportData = parsed.data;
+          previewEl.innerHTML = `
+            <strong>Xem trước file:</strong><br>
+            • Kỷ niệm: ${parsed.data.memories ? parsed.data.memories.length : 0} mục<br>
+            • Cột mốc: ${parsed.data.timeline ? parsed.data.timeline.length : 0} mục<br>
+            • Mục tiêu: ${parsed.data.goals ? parsed.data.goals.length : 0} mục<br>
+            • Trải nghiệm: ${parsed.data.bucketList ? parsed.data.bucketList.length : 0} mục
+          `;
+          importBtn.disabled = false;
+        } catch (err) {
+          previewEl.innerHTML = `<span style="color:#ff6b7e">Lỗi: File JSON không đúng định dạng sao lưu TxT.</span>`;
+          importBtn.disabled = true;
+        }
+      };
+      reader.readAsText(file);
+    };
+
+    window.executeDataImport = async function() {
+      if (!pendingImportData) return;
+      if (!confirm("Bắt đầu khôi phục dữ liệu từ file? Các dữ liệu trùng lặp sẽ được hợp nhất an toàn.")) return;
+
+      if (!isDemoMode && db && currentUser) {
+        try {
+          // Khôi phục lên Firestore
+          let count = 0;
+          if (pendingImportData.memories) {
+            for (let m of pendingImportData.memories) {
+              await addDoc(collection(db, "memories"), {
+                ...m,
+                restoredAt: serverTimestamp()
+              });
+              count++;
+            }
+          }
+          showToast(`Đã khôi phục ${count} bản ghi lên Firestore!`, "success");
+        } catch (e) {
+          showToast("Lỗi khôi phục: " + e.message, "error");
+        }
+      } else {
+        // Khôi phục cục bộ
+        if (pendingImportData.memories) memoriesData = [...pendingImportData.memories];
+        if (pendingImportData.timeline) timelineData = [...pendingImportData.timeline];
+        if (pendingImportData.goals) goalsData = [...pendingImportData.goals];
+        if (pendingImportData.bucketList) bucketData = [...pendingImportData.bucketList];
+
+        saveLocalData();
+        renderTimeline();
+        renderMemories();
+        renderGoals();
+        renderBucketList();
+        showToast("Đã khôi phục toàn bộ dữ liệu từ bản sao lưu thành công!", "success");
+      }
+
+      document.getElementById('import-json-file').value = '';
+      document.getElementById('btn-start-import').disabled = true;
+      document.getElementById('import-preview-box').innerHTML = '';
+      pendingImportData = null;
+    };
+
+    // =========================================================================
+    // CẬP NHẬT THỐNG KÊ DASHBOARD (KHÔNG DÙNG SỐ LIỆU GIẢ)
+    // =========================================================================
+    function updateDashboardStats() {
+      const activeMemories = memoriesData.filter(m => !m.isDeleted).length;
+      const activeMilestones = timelineData.filter(t => !t.isDeleted).length;
+      const activeGoals = goalsData.filter(g => !g.isDeleted && g.status === 'in_progress').length;
+      const completedBucket = bucketData.filter(b => !b.isDeleted && b.status === 'completed').length;
+
+      document.getElementById('stat-memories-count').textContent = activeMemories;
+      document.getElementById('stat-milestones-count').textContent = activeMilestones;
+      document.getElementById('stat-goals-active').textContent = activeGoals;
+      document.getElementById('stat-bucket-completed').textContent = completedBucket;
+    }
+
+    // =========================================================================
+    // KHỞI ĐỘNG ỨNG DỤNG LẦN ĐẦU (APP INITIALIZATION)
+    // =========================================================================
+    function initApp() {
+      updateCounters();
+      setInterval(updateCounters, 60000); // Cập nhật lại ngày mỗi phút
+
+      if (isDemoMode) {
+        document.getElementById('setup-guide-banner').style.display = 'flex';
+        const connEl = document.getElementById("sys-conn-status");
+        if (connEl) {
+          connEl.textContent = "Chế độ Trải nghiệm thử (Dữ liệu cục bộ)";
+          connEl.style.color = "var(--status-warning)";
+        }
+        initLocalData();
+      }
+
+      renderProfileUI();
+      updateDashboardStats();
+    }
+
+    initApp();
+  </script>
+</body>
+</html>
